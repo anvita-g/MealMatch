@@ -1,5 +1,5 @@
 function Footer() {
-    return <footer>© 2025 Food Donation Platform</footer>;
+    return <footer>© 2025 MealMatch</footer>;
 }
 
 export default Footer;
