@@ -1,7 +1,9 @@
 /* src/index.css (Global Styles) */
 
+@import url('https://fonts.googleapis.com/css2?family=Hind:wght@400;600&display=swap');
+
 :root {
-  --primary-color: #ff4d4d;
+  --primary-color: #000000;
   --secondary-color: #f9f9f9;
   --font-family: 'Inter', sans-serif;
 }

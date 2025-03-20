@@ -13,7 +13,6 @@ import Profile from "./pages/settings/Profile";
 import Preferences from "./pages/settings/Preferences";
 import History from "./pages/settings/History";
 import TermsConditions from "./pages/settings/TermsConditions";
-import "./App.css";
 
 function App() {
     return (
