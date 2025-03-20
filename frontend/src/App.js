@@ -1,25 +1,41 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import HomePreLogin from "./pages/home/HomePreLogin";
+import HomePostLogin from "./pages/home/HomePostLogin";
+import Login from "./pages/login/Login";
+import RestaurantLogin from "./pages/login/RestaurantLogin";
+import ShelterLogin from "./pages/login/ShelterLogin";
+import Confirmation from "./pages/home/Confirmation";
+import MatchRequest from "./pages/MatchRequest";
+import PostMatch from "./pages/PostMatch";
+import Profile from "./pages/settings/Profile";
+import Preferences from "./pages/settings/Preferences";
+import History from "./pages/settings/History";
+import TermsConditions from "./pages/settings/TermsConditions";
+import "./App.css";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <Router>
+            <Navbar />
+            <Routes>
+                <Route path="/" element={<HomePreLogin />} />
+                <Route path="/dashboard" element={<HomePostLogin />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/restaurant-login" element={<RestaurantLogin />} />
+                <Route path="/shelter-login" element={<ShelterLogin />} />
+                <Route path="/confirmation" element={<Confirmation />} />
+                <Route path="/match-request" element={<MatchRequest />} />
+                <Route path="/post-match" element={<PostMatch />} />
+                <Route path="/settings/profile" element={<Profile />} />
+                <Route path="/settings/preferences" element={<Preferences />} />
+                <Route path="/settings/history" element={<History />} />
+                <Route path="/settings/terms" element={<TermsConditions />} />
+            </Routes>
+            <Footer />
+        </Router>
+    );
 }
 
 export default App;
