@@ -7,8 +7,8 @@ import Login from "./pages/login/Login";
 import RestaurantLogin from "./pages/login/RestaurantLogin";
 import ShelterLogin from "./pages/login/ShelterLogin";
 import Confirmation from "./pages/home/Confirmation";
-import MatchRequest from "./pages/MatchRequest";
-import PostMatch from "./pages/PostMatch";
+import MatchRequest from "./pages/match/MatchRequest";
+import PostMatch from "./pages/tracking/Tracking";
 import Profile from "./pages/settings/Profile";
 import Preferences from "./pages/settings/Preferences";
 import History from "./pages/settings/History";
@@ -26,7 +26,7 @@ function App() {
                 <Route path="/shelter-login" element={<ShelterLogin />} />
                 <Route path="/confirmation" element={<Confirmation />} />
                 <Route path="/match-request" element={<MatchRequest />} />
-                <Route path="/post-match" element={<PostMatch />} />
+                <Route path="/tracking" element={<PostMatch />} />
                 <Route path="/settings/profile" element={<Profile />} />
                 <Route path="/settings/preferences" element={<Preferences />} />
                 <Route path="/settings/history" element={<History />} />

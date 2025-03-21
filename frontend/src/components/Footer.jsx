@@ -16,7 +16,7 @@ function Footer() {
                     <li><a href="/">Home</a></li>
                     <li><a href="/match-request">Request Match</a></li>
                     <li><a href="/tracking">Tracking</a></li>
-                    <li><a href="/settings">Settings</a></li>
+                    <li><a href="/settings/profile">Settings</a></li>
                 </ul>
             </div>
             <div className="footer-section">
