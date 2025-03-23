@@ -29,7 +29,7 @@ function ShelterSignup() {
       });
 
       alert("Shelter account created successfully!");
-      navigate("/shelter-dashboard"); 
+      navigate("/confirmation"); 
     } catch (error) {
       alert(error.message);
     }

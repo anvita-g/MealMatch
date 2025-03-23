@@ -1,2 +1,10 @@
-function Preferences() { return <h1>Preferences</h1>; }
+// Example: Preferences.jsx
+function Preferences() {
+    return (
+      <div>
+        <h1>Preferences Page</h1>
+      </div>
+    );
+  }
 export default Preferences;
+  

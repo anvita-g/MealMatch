@@ -29,7 +29,7 @@ function RestaurantSignup() {
       });
 
       alert("Restaurant account created successfully!");
-      navigate("/restaurant-dashboard");
+      navigate("/confirmation");
     } catch (error) {
       alert(error.message);
     }

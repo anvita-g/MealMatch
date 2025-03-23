@@ -1,2 +1,10 @@
-function History() { return <h1>History</h1>; }
+// Example: Preferences.jsx
+function History() {
+    return (
+      <div>
+        <h1>History Page</h1>
+      </div>
+    );
+  }
 export default History;
+  

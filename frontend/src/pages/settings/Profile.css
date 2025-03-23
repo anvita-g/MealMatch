@@ -1,0 +1,162 @@
+@import url('https://fonts.googleapis.com/css2?family=Hind&family=Noto+Serif:wght@700&display=swap');
+
+body {
+  font-family: 'Hind', sans-serif;
+  margin: 0;
+  background-color: #fff;
+  color: #1e1e1e;
+}
+
+.profile-page {
+  display: flex;
+  min-height: 100vh;
+  font-size: 14px;
+}
+
+.profile-sidebar {
+  width: 30%;
+  border-right: 1px solid #bfbfbf;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.restaurant-name {
+  font-family: 'Noto Serif', serif;
+  font-size: 20px;
+  margin-bottom: 0;
+}
+
+.restaurant-type {
+  color: gray;
+  margin: 4px 0;
+}
+
+.restaurant-location {
+  margin: 0;
+}
+
+.status-badge {
+  display: inline-block;
+  margin-top: 6px;
+  background-color: #b7bc57;
+  padding: 4px 12px;
+  border-radius: 12px;
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.section {
+  border-top: 1px solid #bfbfbf;
+  padding-top: 20px;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.section h4 {
+  font-weight: bold;
+  color: #7b7266;
+  margin-bottom: 8px;
+}
+
+.icon {
+  margin-right: 8px;
+}
+
+.tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.tag {
+  background-color: #F19B5A;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 13px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.preview-note {
+  margin-top: 40px;
+  font-size: 12px;
+  color: gray;
+}
+
+.profile-main {
+  width: 70%;
+  padding: 40px;
+}
+
+.profile-tabs {
+  display: flex;
+  gap: 30px;
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 10px;
+  margin-bottom: 30px;
+}
+
+.tab {
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.tab.active {
+  border-bottom: 2px solid #F19B5A;
+  font-weight: bold;
+}
+
+.profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.profile-header h2 {
+  margin: 0;
+}
+
+.edit-button {
+  background-color: #F19B5A;
+  border: none;
+  color: white;
+  padding: 8px 20px;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.profile-section {
+  margin-top: 30px;
+}
+
+.profile-section h4 {
+  color: #7b7266;
+  margin-bottom: 12px;
+}
+
+.profile-section p {
+  margin: 6px 0;
+}
+
+.highlight {
+  color: #F19B5A;
+}
+
+.logout-button {
+  margin-top: 30px;
+  background-color: #F19B5A;
+  border: none;
+  color: white;
+  padding: 10px 30px;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
