@@ -13,15 +13,23 @@ function RestaurantSignup() {
   const handleSignup = async () => {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-
       const user = userCredential.user;
 
       await addDoc(collection(db, "restaurants"), {
         name: restaurantName,
         email: user.email,
         createdAt: Timestamp.fromDate(new Date()),
+        phoneNumber: null,
+        address: null,
+        website: null,
+        availability: null,
+        timeOfDay: null,
+        radius: null,
+        arrangement: null,
+        tags: {},
       });
 
+      // Add user role to "users" collection
       await addDoc(collection(db, "users"), {
         email: user.email,
         role: "restaurant",
