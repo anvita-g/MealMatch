@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebaseConfig";
+import "./Login.css";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -18,24 +19,43 @@ function Login() {
   };
 
   return (
-    <div>
-      <h1>Login</h1>
+    <div className="login-container">
+      <img
+        src="/logo.png" // replace with your actual logo path
+        alt="Meal Match Logo"
+        className="login-logo"
+      />
+      <h1 className="login-title">LOG IN</h1>
+
       <input
-        type="email"
-        placeholder="Email"
+        className="login-input"
+        type="text"
+        placeholder="username"
         onChange={(e) => setEmail(e.target.value)}
       />
       <input
+        className="login-input"
         type="password"
-        placeholder="Password"
+        placeholder="password"
         onChange={(e) => setPassword(e.target.value)}
       />
-      <button onClick={handleLogin}>Login</button>
-      <button onClick={() => navigate("/restaurant-login")}>
-        Restaurant Create Account
+      <button className="login-button" onClick={handleLogin}>
+        SIGN IN
       </button>
-      <button onClick={() => navigate("/shelter-login")}>
-        Shelter Create Account
+
+      <h2 className="account-heading">CREATE AN ACCOUNT</h2>
+
+      <button
+        className="restaurant-button"
+        onClick={() => navigate("/restaurant-login")}
+      >
+        RESTAURANT ACCOUNT
+      </button>
+      <button
+        className="shelter-button"
+        onClick={() => navigate("/shelter-login")}
+      >
+        SHELTER ACCOUNT
       </button>
     </div>
   );
