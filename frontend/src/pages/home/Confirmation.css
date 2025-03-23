@@ -1,1 +1,55 @@
 /* Confirmation.css */
+
+/* Bring in the same fonts as in Login.css */
+@import url('https://fonts.googleapis.com/css2?family=Hind&family=Noto+Serif:wght@700&display=swap');
+
+
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #ffffff;
+  font-family: 'Hind', sans-serif;
+}
+
+/* Container holds the rounded rectangle */
+.confirmation-container {
+  width: 360px;            
+  margin: 80px auto;          
+  padding: 20px;
+  background-color: #fae3b2; 
+  border-radius: 20px;
+  text-align: center;
+}
+
+/* The text inside container */
+.confirmation-text {
+  color: #000000;             
+  font-size: 16px;           
+  margin-bottom: 20px;
+  line-height: 1.4em;
+}
+
+/* The large orange button */
+.back-home-button {
+  width: 160px;          
+  padding: 10px;
+  background-color: #F19B5A;
+  color: #ffffff;
+  font-weight: bold;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+/* The smaller Skip button (gray) */
+.skip-button {
+  width: 80px;               
+  padding: 8px;
+  background-color: #cccccc; 
+  color: #000000;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
