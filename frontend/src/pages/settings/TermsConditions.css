@@ -1,0 +1,28 @@
+/* Only the specific overrides or additions for Terms page */
+
+.terms-content {
+    font-size: 14px;
+    color: #1e1e1e;
+    line-height: 1.6;
+  }
+  
+  .terms-title {
+    font-family: 'Noto Serif', serif;
+    font-weight: bold;
+    color: #7b7266;
+    margin-bottom: 5px;
+  }
+  
+  .terms-updated {
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 20px;
+  }
+  
+  .terms-content h4 {
+    margin-top: 25px;
+    font-size: 15px;
+    font-weight: bold;
+    color: #1e1e1e;
+  }
+  

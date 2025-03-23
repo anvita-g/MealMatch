@@ -11,7 +11,6 @@ import MatchRequest from "./pages/match/MatchRequest";
 import PostMatch from "./pages/tracking/Tracking";
 import Profile from "./pages/settings/Profile";
 import Preferences from "./pages/settings/Preferences";
-import History from "./pages/settings/History";
 import TermsConditions from "./pages/settings/TermsConditions";
 
 function App() {
@@ -29,7 +28,6 @@ function App() {
                 <Route path="/tracking" element={<PostMatch />} />
                 <Route path="/settings/profile" element={<Profile />} />
                 <Route path="/settings/preferences" element={<Preferences />} />
-                <Route path="/settings/history" element={<History />} />
                 <Route path="/settings/terms" element={<TermsConditions />} />
             </Routes>
             <Footer />

@@ -1,0 +1,17 @@
+.profile-tabs {
+    display: flex;
+    gap: 30px;
+    padding-bottom: 10px;
+    margin-bottom: 30px;
+  }
+  
+  .tab {
+    font-weight: 500;
+    cursor: pointer;
+  }
+  
+  .tab.active {
+    border-bottom: 2px solid #F19B5A;
+    font-weight: bold;
+  }
+  

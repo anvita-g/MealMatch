@@ -1,7 +1,44 @@
+import { useState } from "react";
 import "./Profile.css";
-import { FaPhoneAlt, FaEnvelope, FaCalendarAlt, FaSun, FaTruck, FaMapMarkerAlt } from "react-icons/fa";
+import SettingsTabs from "./SettingsTabs";
+import { useNavigate } from "react-router-dom";
+
+import {
+  FaPhoneAlt,
+  FaEnvelope,
+  FaCalendarAlt,
+  FaSun,
+  FaTruck,
+  FaMapMarkerAlt,
+} from "react-icons/fa";
 
 function Profile() {
+  const [isEditing, setIsEditing] = useState(false);
+  const navigate = useNavigate();
+  const [name, setName] = useState("Kaelyn Long");
+  const [phone, setPhone] = useState("+1 123 456 7890");
+  const [email, setEmail] = useState("condado@gmail.com");
+  const [address, setAddress] = useState("401 E Liberty St #200, Ann Arbor, MI 48104");
+  const [website, setWebsite] = useState("www.condado.com");
+  const [username, setUsername] = useState("condadoannarbor");
+  const [password, setPassword] = useState("●●●●●●●●●●");
+
+  const toggleEdit = () => {
+    setIsEditing(!isEditing);
+  };
+
+  const renderField = (value, setter) => (
+    isEditing ? (
+      <input
+        className="editable-input"
+        value={value}
+        onChange={(e) => setter(e.target.value)}
+      />
+    ) : (
+      <span className="highlight">{value}</span>
+    )
+  );
+
   return (
     <div className="profile-page">
       <div className="profile-sidebar">
@@ -36,13 +73,7 @@ function Profile() {
       </div>
 
       <div className="profile-main">
-        <div className="profile-tabs">
-          <span className="tab active">Profile</span>
-          <span className="tab">Preferences</span>
-          <span className="tab">History</span>
-          <span className="tab">Reviews</span>
-          <span className="tab">T&C</span>
-        </div>
+        <SettingsTabs />
 
         <div className="profile-header">
           <div>
@@ -50,25 +81,29 @@ function Profile() {
             <p><FaMapMarkerAlt className="icon" /> Ann Arbor, MI</p>
             <span className="status-badge">Active</span>
           </div>
-          <button className="edit-button">EDIT</button>
+          <button className="edit-button" onClick={toggleEdit}>
+            {isEditing ? "DONE" : "EDIT"}
+          </button>
         </div>
 
         <div className="profile-section">
           <h4>CONTACT INFORMATION</h4>
-          <p><strong>Primary Name:</strong> Kaelyn Long</p>
-          <p><strong>Phone Number:</strong> <span className="highlight">+1 123 456 7890</span></p>
-          <p><strong>E-mail Address:</strong> <span className="highlight">condado@gmail.com</span></p>
-          <p><strong>Address:</strong> 401 E Liberty St #200, Ann Arbor, MI 48104</p>
-          <p><strong>Website:</strong> <span className="highlight">www.condado.com</span></p>
+          <p><strong>Primary Name:</strong> {renderField(name, setName)}</p>
+          <p><strong>Phone Number:</strong> {renderField(phone, setPhone)}</p>
+          <p><strong>E-mail Address:</strong> {renderField(email, setEmail)}</p>
+          <p><strong>Address:</strong> {renderField(address, setAddress)}</p>
+          <p><strong>Website:</strong> {renderField(website, setWebsite)}</p>
         </div>
 
         <div className="profile-section">
           <h4>ACCOUNT</h4>
-          <p><strong>Username:</strong> condadoannarbor</p>
-          <p><strong>Password:</strong> ●●●●●●●●●●</p>
+          <p><strong>Username:</strong> {renderField(username, setUsername)}</p>
+          <p><strong>Password:</strong> {renderField(password, setPassword)}</p>
         </div>
 
-        <button className="logout-button">LOG OUT</button>
+        <button className="logout-button" onClick={() => navigate("/")}>
+            LOG OUT
+        </button>
       </div>
     </div>
   );
