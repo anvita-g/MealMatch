@@ -116,7 +116,6 @@ function Profile() {
     }
   };
 
-
   if (loading) return <p>Loading...</p>;
   if (!profile) return <p>Error loading profile.</p>;
 
@@ -139,17 +138,42 @@ function Profile() {
         </div>
 
         <div className="section">
-          <h4>AVAILABILITY</h4>
-          <p>
-            <FaCalendarAlt className="icon" /> {profile.availability || "N/A"}
-          </p>
-          <p>
-            <FaSun className="icon" /> {profile.timeOfDay || "N/A"}
-          </p>
-          <p>
-            <FaTruck className="icon" /> Pickup Only
-          </p>
-        </div>
+  <h4>AVAILABILITY</h4>
+  {profile.days && typeof profile.days === "object" ? (
+    <p>
+      <FaCalendarAlt className="icon" />
+      {Object.values(profile.days).map((times, index) => (
+        <span key={index}>
+          {Array.isArray(times) ? times.join(", ") : times}
+          {index < Object.values(profile.days).length - 1 && ", "}
+        </span>
+      ))}
+    </p>
+  ) : (
+    <p>Availability not set</p>
+  )}
+
+  {profile.times && typeof profile.times === "object" ? (
+    <p>
+      <FaSun className="icon" />
+      {Object.values(profile.times).map((value, index) => (
+        <span key={index}>
+          {value || "N/A"}
+          {index < Object.values(profile.times).length - 1 && ", "}
+        </span>
+      ))}
+    </p>
+  ) : (
+    <p>Time of day not set</p>
+  )}
+
+<p>
+    <FaTruck className="icon" />
+    {profile.arrangement || "Pickup Only"}
+  </p>
+</div>
+
+
 
         <div className="section">
           <h4>TAGS</h4>

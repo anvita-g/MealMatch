@@ -1,34 +1,139 @@
+import React, { useState, useEffect } from "react";
 import "./TermsConditions.css";
 import SettingsTabs from "./SettingsTabs";
+import { FaPhoneAlt, FaEnvelope, FaCalendarAlt, FaSun, FaTruck, FaMapMarkerAlt } from "react-icons/fa";
+import { auth, db } from "../../firebaseConfig";
+import { onAuthStateChanged } from "firebase/auth";
+import { collection, query, where, getDocs } from "firebase/firestore";
 
 function TermsConditions() {
+  const [profile, setProfile] = useState(null);
+  const [role, setRole] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      setLoading(true);
+      const currentUser = auth.currentUser;
+      if (!currentUser) {
+        console.error("No user logged in");
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const usersQuery = query(
+          collection(db, "users"),
+          where("email", "==", currentUser.email)
+        );
+        const usersSnapshot = await getDocs(usersQuery);
+        if (usersSnapshot.empty) {
+          console.error("User not found in users collection");
+          setLoading(false);
+          return;
+        }
+
+        const userData = usersSnapshot.docs[0].data();
+        const userRole = userData.role;
+        setRole(userRole);
+
+        const profileQuery = query(
+          collection(db, userRole + "s"),
+          where("email", "==", currentUser.email)
+        );
+        const profileSnapshot = await getDocs(profileQuery);
+        if (profileSnapshot.empty) {
+          console.error("Profile not found in " + userRole + "s collection");
+          setLoading(false);
+          return;
+        }
+
+        const profileData = profileSnapshot.docs[0].data();
+        setProfile(profileData);
+      } catch (error) {
+        console.error("Error fetching profile:", error);
+      }
+      setLoading(false);
+    };
+
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        fetchProfile();
+      } else {
+        setProfile(null);
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  if (loading) return <p>Loading...</p>;
+  if (!profile) return <p>Error loading profile.</p>;
+
   return (
     <div className="profile-page">
       <div className="profile-sidebar">
-        <h2 className="restaurant-name">Condado</h2>
-        <p className="restaurant-type">Restaurant</p>
-        <p className="restaurant-location">Ann Arbor, MI</p>
+        <h2 className="restaurant-name">{profile.name}</h2>
+        <p className="restaurant-type">{role === "restaurant" ? "Restaurant" : "Shelter"}</p>
+        <p className="restaurant-location">{profile.address || "No Address"}</p>
         <span className="status-badge">Active</span>
 
         <div className="section">
           <h4>CONTACT INFORMATION</h4>
-          <p>+1 123 456 7890</p>
-          <p>condado@gmail.com</p>
+          <p>
+            <FaPhoneAlt className="icon" /> {profile.phoneNumber || "No Phone"}
+          </p>
+          <p>
+            <FaEnvelope className="icon" /> {profile.email}
+          </p>
         </div>
 
         <div className="section">
           <h4>AVAILABILITY</h4>
-          <p>M, T, W, TH</p>
-          <p>Morning, Afternoon</p>
-          <p>Pickup Only</p>
+          {profile.days && typeof profile.days === "object" ? (
+            <p>
+              <FaCalendarAlt className="icon" />
+              {Object.values(profile.days).map((times, index) => (
+                <span key={index}>
+                  {Array.isArray(times) ? times.join(", ") : times}
+                  {index < Object.values(profile.days).length - 1 && ", "}
+                </span>
+              ))}
+            </p>
+          ) : (
+            <p>Availability not set</p>
+          )}
+
+          {profile.times && typeof profile.times === "object" ? (
+            <p>
+              <FaSun className="icon" />
+              {Object.values(profile.times).map((value, index) => (
+                <span key={index}>
+                  {value || "N/A"}
+                  {index < Object.values(profile.times).length - 1 && ", "}
+                </span>
+              ))}
+            </p>
+          ) : (
+            <p>Time of day not set</p>
+          )}
+
+          <p>
+            <FaTruck className="icon" />
+            {profile.arrangement || "Pickup Only"}
+          </p>
         </div>
 
         <div className="section">
           <h4>TAGS</h4>
           <div className="tags">
-            <span className="tag">Vegan</span>
-            <span className="tag">Halal</span>
-            <span className="tag">Gluten Free</span>
+            {profile.tags
+              ? Object.values(profile.tags).map((tag, index) => (
+                  <span key={index} className="tag">
+                    {tag}
+                  </span>
+                ))
+              : "No Tags"}
           </div>
         </div>
 
@@ -37,7 +142,6 @@ function TermsConditions() {
 
       <div className="profile-main">
         <SettingsTabs />
-
         <div className="terms-content">
           <h2 className="terms-title">Terms of Service</h2>
           <p className="terms-updated">Last updated March 2025</p>

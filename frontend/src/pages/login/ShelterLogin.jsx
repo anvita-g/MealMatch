@@ -20,6 +20,14 @@ function ShelterSignup() {
         name: shelterName,
         email: user.email,
         createdAt: Timestamp.fromDate(new Date()),
+        phoneNumber: null,
+        address: null,
+        website: null,
+        availability: {},
+        times: {},
+        radius: null,
+        arrangement: null,
+        tags: {},
       });
 
       await addDoc(collection(db, "users"), {
