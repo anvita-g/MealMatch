@@ -28,6 +28,7 @@ function ShelterSignup() {
         radius: null,
         arrangement: null,
         tags: {},
+        description: null,
       });
 
       await addDoc(collection(db, "users"), {

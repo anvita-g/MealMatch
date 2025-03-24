@@ -28,6 +28,7 @@ function Profile() {
     phone: "",
     address: "",
     website: "",
+    description: "",
   });
 
   useEffect(() => {
@@ -74,6 +75,7 @@ function Profile() {
           phone: profileData.phoneNumber || "",
           address: profileData.address || "",
           website: profileData.website || "",
+          description: profileData.description || "",
         });
       } catch (error) {
         console.error("Error fetching profile:", error);
@@ -108,8 +110,9 @@ function Profile() {
         phoneNumber: editableData.phone,
         address: editableData.address,
         website: editableData.website,
+        description: editableData.description,
       });
-      setProfile({ ...profile, name: editableData.name, phoneNumber: editableData.phone, address: editableData.address, website: editableData.website });
+      setProfile({ ...profile, name: editableData.name, phoneNumber: editableData.phone, address: editableData.address, website: editableData.website, description: editableData.description });
       setIsEditing(false);
     } catch (error) {
       console.error("Error updating profile:", error);
@@ -120,76 +123,73 @@ function Profile() {
   if (!profile) return <p>Error loading profile.</p>;
 
   return (
-    <div className="profile-page">
-      <div className="profile-sidebar">
-        <h2 className="restaurant-name">{profile.name}</h2>
-        <p className="restaurant-type">{role === "restaurant" ? "Restaurant" : "Shelter"}</p>
-        <p className="restaurant-location">{profile.address || "No Address"}</p>
-        <span className="status-badge">Active</span>
+       <div className="profile-page">
+         <div className="profile-sidebar">
+           <h2 className="restaurant-name">{profile.name}</h2>
+           <p className="restaurant-type">{role === "restaurant" ? "Restaurant" : "Shelter"}</p>
+           <p className="restaurant-location">{profile.address || "No Address"}</p>
+           <span className="status-badge">Active</span>
+   
+           <div className="section">
+             <h4>CONTACT INFORMATION</h4>
+             <p>
+               <FaPhoneAlt className="icon" /> {profile.phoneNumber || "No Phone"}
+             </p>
+             <p>
+               <FaEnvelope className="icon" /> {profile.email}
+             </p>
+           </div>
+   
+           <div className="section">
+     <h4>AVAILABILITY</h4>
+     {profile.days && typeof profile.days === "object" ? (
+       <p>
+         <FaCalendarAlt className="icon" />
+         {Object.values(profile.days).map((times, index) => (
+           <span key={index}>
+             {Array.isArray(times) ? times.join(", ") : times}
+             {index < Object.values(profile.days).length - 1 && ", "}
+           </span>
+         ))}
+       </p>
+     ) : (
+       <p>Availability not set</p>
+     )}
+   
+     {profile.times && typeof profile.times === "object" ? (
+       <p>
+         <FaSun className="icon" />
+         {Object.values(profile.times).map((value, index) => (
+           <span key={index}>
+             {value || "N/A"}
+             {index < Object.values(profile.times).length - 1 && ", "}
+           </span>
+         ))}
+       </p>
+     ) : (
+       <p>Time of day not set</p>
+     )}
+   
+   <p>
+       <FaTruck className="icon" />
+       {profile.arrangement || "Pickup Only"}
+     </p>
+   </div>
+   <div className="section">
+           <h4>TAGS</h4>
+           <div className="tags">
+             {profile.tags
+               ? Object.values(profile.tags).map((tag, index) => (
+                   <span key={index} className="tag">
+                     {tag}
+                   </span>
+                 ))
+               : "No Tags"}
+           </div>
+         </div>
 
-        <div className="section">
-          <h4>CONTACT INFORMATION</h4>
-          <p>
-            <FaPhoneAlt className="icon" /> {profile.phoneNumber || "No Phone"}
-          </p>
-          <p>
-            <FaEnvelope className="icon" /> {profile.email}
-          </p>
-        </div>
-
-        <div className="section">
-  <h4>AVAILABILITY</h4>
-  {profile.days && typeof profile.days === "object" ? (
-    <p>
-      <FaCalendarAlt className="icon" />
-      {Object.values(profile.days).map((times, index) => (
-        <span key={index}>
-          {Array.isArray(times) ? times.join(", ") : times}
-          {index < Object.values(profile.days).length - 1 && ", "}
-        </span>
-      ))}
-    </p>
-  ) : (
-    <p>Availability not set</p>
-  )}
-
-  {profile.times && typeof profile.times === "object" ? (
-    <p>
-      <FaSun className="icon" />
-      {Object.values(profile.times).map((value, index) => (
-        <span key={index}>
-          {value || "N/A"}
-          {index < Object.values(profile.times).length - 1 && ", "}
-        </span>
-      ))}
-    </p>
-  ) : (
-    <p>Time of day not set</p>
-  )}
-
-<p>
-    <FaTruck className="icon" />
-    {profile.arrangement || "Pickup Only"}
-  </p>
-</div>
-
-
-
-        <div className="section">
-          <h4>TAGS</h4>
-          <div className="tags">
-            {profile.tags
-              ? Object.values(profile.tags).map((tag, index) => (
-                  <span key={index} className="tag">
-                    {tag}
-                  </span>
-                ))
-              : "No Tags"}
-          </div>
-        </div>
-
-        <p className="preview-note">Preview: This page is displayed to others</p>
-      </div>
+         <p className="preview-note">Preview: This page is displayed to others</p>
+       </div>
 
       <div className="profile-main">
         <SettingsTabs />
@@ -197,19 +197,13 @@ function Profile() {
         <div className="profile-header">
           <div>
             <h2>{profile.name}</h2>
-            <p>
-              <FaMapMarkerAlt className="icon" /> {profile.address || "No Address"}
-            </p>
+            <p><FaMapMarkerAlt className="icon" /> {profile.address || "No Address"}</p>
             <span className="status-badge">Active</span>
           </div>
           {isEditing ? (
-            <button className="edit-button" onClick={handleSave}>
-              SAVE
-            </button>
+            <button className="edit-button" onClick={handleSave}>SAVE</button>
           ) : (
-            <button className="edit-button" onClick={toggleEdit}>
-              EDIT
-            </button>
+            <button className="edit-button" onClick={toggleEdit}>EDIT</button>
           )}
         </div>
 
@@ -218,13 +212,7 @@ function Profile() {
           <p>
             <strong>Primary Name:</strong>{" "}
             {isEditing ? (
-              <input
-                type="text"
-                name="name"
-                value={editableData.name}
-                onChange={handleChange}
-                className="editable-input"
-              />
+              <input type="text" name="name" value={editableData.name} onChange={handleChange} className="editable-input" />
             ) : (
               profile.name
             )}
@@ -233,13 +221,7 @@ function Profile() {
             <strong>Phone Number:</strong>{" "}
             <span className="highlight">
               {isEditing ? (
-                <input
-                  type="text"
-                  name="phone"
-                  value={editableData.phone}
-                  onChange={handleChange}
-                  className="editable-input"
-                />
+                <input type="text" name="phone" value={editableData.phone} onChange={handleChange} className="editable-input" />
               ) : (
                 profile.phoneNumber || "No Phone"
               )}
@@ -248,13 +230,7 @@ function Profile() {
           <p>
             <strong>Address:</strong>{" "}
             {isEditing ? (
-              <input
-                type="text"
-                name="address"
-                value={editableData.address}
-                onChange={handleChange}
-                className="editable-input"
-              />
+              <input type="text" name="address" value={editableData.address} onChange={handleChange} className="editable-input" />
             ) : (
               profile.address || "No Address"
             )}
@@ -263,15 +239,19 @@ function Profile() {
             <strong>Website:</strong>{" "}
             <span className="highlight">
               {isEditing ? (
-                <input
-                  type="text"
-                  name="website"
-                  value={editableData.website}
-                  onChange={handleChange}
-                  className="editable-input"
-                />
+                <input type="text" name="website" value={editableData.website} onChange={handleChange} className="editable-input" />
               ) : (
                 profile.website || "No Website"
+              )}
+            </span>
+          </p>
+          <p>
+            <strong>Description:</strong>{" "}
+            <span className="highlight">
+              {isEditing ? (
+                <textarea name="description" value={editableData.description} onChange={handleChange} className="editable-textarea" />
+              ) : (
+                profile.description || "No Description Available"
               )}
             </span>
           </p>
@@ -279,18 +259,11 @@ function Profile() {
 
         <div className="profile-section">
           <h4>ACCOUNT</h4>
-          <p>
-            <strong>E-mail Address:</strong>{" "}
-            <span className="highlight">{profile.email}</span>
-          </p>
-          <p>
-            <strong>Password:</strong> ●●●●●●●●●●
-          </p>
+          <p><strong>E-mail Address:</strong> <span className="highlight">{profile.email}</span></p>
+          <p><strong>Password:</strong> ●●●●●●●●●●</p>
         </div>
 
-        <button className="logout-button" onClick={() => navigate("/")}>
-          LOG OUT
-        </button>
+        <button className="logout-button" onClick={() => navigate("/")}>LOG OUT</button>
       </div>
     </div>
   );

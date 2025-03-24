@@ -27,9 +27,9 @@ function RestaurantSignup() {
         radius: null,
         arrangement: null,
         tags: {},
+        description: null,
       });
 
-      // Add user role to "users" collection
       await addDoc(collection(db, "users"), {
         email: user.email,
         role: "restaurant",
