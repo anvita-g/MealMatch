@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import "./Preferences.css";
+import "./Preferences.css"; 
+import SettingsTabs from "./SettingsTabs";
 import { auth, db } from "../../firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
 import { collection, query, where, getDocs, doc, updateDoc } from "firebase/firestore";
-import SettingsTabs from "./SettingsTabs";
 import {
   FaPhoneAlt,
   FaEnvelope,
@@ -63,11 +63,12 @@ function Preferences() {
         const profileData = profileSnapshot.docs[0].data();
         setProfile(profileData);
         setDocId(docRef.id);
+
         setRadius(profileData.radius || 50);
         setArrangement(profileData.arrangement || "pickup");
         setTags(Array.isArray(profileData.tags) ? profileData.tags : []);
-        setDays(profileData.days || ["M", "T", "W", "TH"]);
-        setTimes(profileData.times || ["MORNING", "AFTERNOON"]);
+        setDays(Array.isArray(profileData.days) ? profileData.days : ["M", "T", "W", "TH"]);
+        setTimes(Array.isArray(profileData.times) ? profileData.times : ["MORNING", "AFTERNOON"]);
       } catch (error) {
         console.error("Error fetching profile:", error);
       }
@@ -81,7 +82,6 @@ function Preferences() {
         setProfile(null);
       }
     });
-
     return () => unsubscribe();
   }, []);
 
@@ -103,12 +103,12 @@ function Preferences() {
   };
 
   const toggleTag = (tag) => {
-    setTags(tags.filter((t) => t !== tag)); 
+    setTags(tags.filter((t) => t !== tag));
   };
 
   const handleAddTag = () => {
     if (input && !tags.includes(input)) {
-      setTags([...tags, input]); 
+      setTags([...tags, input]);
     }
     setInput("");
   };
@@ -117,62 +117,59 @@ function Preferences() {
   if (!profile) return <p>Error loading profile.</p>;
 
   return (
-     <div className="profile-page">
-       <div className="profile-sidebar">
-         <h2 className="restaurant-name">{profile.name}</h2>
-         <p className="restaurant-type">{role === "restaurant" ? "Restaurant" : "Shelter"}</p>
-         <p className="restaurant-location">{profile.address || "No Address"}</p>
-         <span className="status-badge">Active</span>
- 
-         <div className="section">
-           <h4>CONTACT INFORMATION</h4>
-           <p>
-             <FaPhoneAlt className="icon" /> {profile.phoneNumber || "No Phone"}
-           </p>
-           <p>
-             <FaEnvelope className="icon" /> {profile.email}
-           </p>
-         </div>
- 
-         <div className="section">
-   <h4>AVAILABILITY</h4>
-   {profile.days && typeof profile.days === "object" ? (
-     <p>
-       <FaCalendarAlt className="icon" />
-       {Object.values(profile.days).map((times, index) => (
-         <span key={index}>
-           {Array.isArray(times) ? times.join(", ") : times}
-           {index < Object.values(profile.days).length - 1 && ", "}
-         </span>
-       ))}
+      <div className="profile-page">
+         <div className="profile-sidebar">
+           <h2 className="restaurant-name">{profile.name}</h2>
+           <p className="restaurant-type">{role === "restaurant" ? "Restaurant" : "Shelter"}</p>
+           <p className="restaurant-location">{profile.address || "No Address"}</p>
+           <span className="status-badge">Active</span>
+   
+           <div className="section">
+             <h4>CONTACT INFORMATION</h4>
+             <p>
+               <FaPhoneAlt className="icon" /> {profile.phoneNumber || "No Phone"}
+             </p>
+             <p>
+               <FaEnvelope className="icon" /> {profile.email}
+             </p>
+           </div>
+   
+           <div className="section">
+     <h4>AVAILABILITY</h4>
+     {profile.days && typeof profile.days === "object" ? (
+       <p>
+         <FaCalendarAlt className="icon" />
+         {Object.values(profile.days).map((times, index) => (
+           <span key={index}>
+             {Array.isArray(times) ? times.join(", ") : times}
+             {index < Object.values(profile.days).length - 1 && ", "}
+           </span>
+         ))}
+       </p>
+     ) : (
+       <p>Availability not set</p>
+     )}
+   
+     {profile.times && typeof profile.times === "object" ? (
+       <p>
+         <FaSun className="icon" />
+         {Object.values(profile.times).map((value, index) => (
+           <span key={index}>
+             {value || "N/A"}
+             {index < Object.values(profile.times).length - 1 && ", "}
+           </span>
+         ))}
+       </p>
+     ) : (
+       <p>Time of day not set</p>
+     )}
+   
+   <p>
+       <FaTruck className="icon" />
+       {profile.arrangement || "Pickup Only"}
      </p>
-   ) : (
-     <p>Availability not set</p>
-   )}
- 
-   {profile.times && typeof profile.times === "object" ? (
-     <p>
-       <FaSun className="icon" />
-       {Object.values(profile.times).map((value, index) => (
-         <span key={index}>
-           {value || "N/A"}
-           {index < Object.values(profile.times).length - 1 && ", "}
-         </span>
-       ))}
-     </p>
-   ) : (
-     <p>Time of day not set</p>
-   )}
- 
- <p>
-     <FaTruck className="icon" />
-     {profile.arrangement || "Pickup Only"}
-   </p>
- </div>
- 
- 
- 
-         <div className="section">
+   </div>
+   <div className="section">
            <h4>TAGS</h4>
            <div className="tags">
              {profile.tags
@@ -184,9 +181,9 @@ function Preferences() {
                : "No Tags"}
            </div>
          </div>
- 
-         <p className="preview-note">Preview: This page is displayed to others</p>
-       </div>
+
+        <p className="preview-note">Preview: This page is displayed to others</p>
+      </div>
 
       <div className="profile-main">
         <SettingsTabs />
@@ -198,7 +195,15 @@ function Preferences() {
               <p><strong>Days of the week</strong></p>
               <div className="tags">
                 {["M", "T", "W", "TH", "F", "SA", "SN"].map((d) => (
-                  <span key={d} className={`tag ${days.includes(d) ? "" : "inactive"}`} onClick={() => setDays(prev => prev.includes(d) ? prev.filter(day => day !== d) : [...prev, d])}>
+                  <span
+                    key={d}
+                    className={`tag ${days.includes(d) ? "" : "inactive"}`}
+                    onClick={() =>
+                      setDays((prev) =>
+                        prev.includes(d) ? prev.filter((day) => day !== d) : [...prev, d]
+                      )
+                    }
+                  >
                     {d}
                   </span>
                 ))}
@@ -209,7 +214,15 @@ function Preferences() {
               <p><strong>Time of Day</strong></p>
               <div className="tags">
                 {["MORNING", "AFTERNOON", "EVENING"].map((t) => (
-                  <span key={t} className={`tag ${times.includes(t) ? "" : "inactive"}`} onClick={() => setTimes(prev => prev.includes(t) ? prev.filter(time => time !== t) : [...prev, t])}>
+                  <span
+                    key={t}
+                    className={`tag ${times.includes(t) ? "" : "inactive"}`}
+                    onClick={() =>
+                      setTimes((prev) =>
+                        prev.includes(t) ? prev.filter((time) => time !== t) : [...prev, t]
+                      )
+                    }
+                  >
                     {t}
                   </span>
                 ))}
@@ -223,21 +236,34 @@ function Preferences() {
           <input
             type="range"
             min="5"
-            max="60"
+            max="50"
             step="5"
             value={radius}
             onChange={(e) => setRadius(e.target.value)}
             className="radius-slider"
           />
+          <div className="radius-labels">
+            <span>5 Miles</span>
+            <span>10 Miles</span>
+            <span>25 Miles</span>
+            <span>50 Miles</span>
+            <span>&gt; 50 Miles</span>
+          </div>
         </div>
 
         <div className="profile-section">
           <h4>ARRANGEMENT</h4>
           <div className="tags">
-            <span className={`tag ${arrangement === "delivery" ? "" : "inactive"}`} onClick={() => setArrangement("delivery")}>
+            <span
+              className={`tag ${arrangement === "delivery" ? "" : "inactive"}`}
+              onClick={() => setArrangement("delivery")}
+            >
               DELIVERY
             </span>
-            <span className={`tag ${arrangement === "pickup" ? "" : "inactive"}`} onClick={() => setArrangement("pickup")}>
+            <span
+              className={`tag ${arrangement === "pickup" ? "" : "inactive"}`}
+              onClick={() => setArrangement("pickup")}
+            >
               PICKUP
             </span>
           </div>
@@ -254,9 +280,11 @@ function Preferences() {
             />
             <button onClick={handleAddTag}>Add</button>
             <datalist id="tag-suggestions">
-              {suggestions.filter((s) => s.toLowerCase().includes(input.toLowerCase())).map((s) => (
-                <option key={s} value={s} />
-              ))}
+              {suggestions
+                .filter((s) => s.toLowerCase().includes(input.toLowerCase()))
+                .map((s) => (
+                  <option key={s} value={s} />
+                ))}
             </datalist>
           </div>
 
@@ -264,7 +292,9 @@ function Preferences() {
             {tags.map((tag) => (
               <span key={tag} className="tag">
                 {tag}{" "}
-                <span className="remove-x" onClick={() => toggleTag(tag)}>✕</span>
+                <span className="remove-x" onClick={() => toggleTag(tag)}>
+                  ✕
+                </span>
               </span>
             ))}
           </div>
