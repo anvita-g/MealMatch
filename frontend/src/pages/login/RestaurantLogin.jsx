@@ -52,13 +52,13 @@ function RestaurantSignup() {
   };
 
   return (
-    <div className="background">
+    <div className="rlbackground">
 
-    <div className="title">
-      <button className = "back-button"> BACK </button>
-      <h1 className="login-title">CREATE A RESTAURANT ACCOUNT</h1>
+    <div className="rltitle">
+      <button className = "rlback-button" onClick={() => navigate('/login')}> BACK </button>
+      <h1 className="rllogin-title">CREATE A RESTAURANT ACCOUNT</h1>
     </div>
-    <div className="signup-container">
+    <div className="rlsignup-container">
       <h4>RESTAURANT NAME *</h4>
       <input
         type="text"
@@ -87,7 +87,7 @@ function RestaurantSignup() {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
-      <h4 className="tc">Terms and Conditions</h4>
+      <h4 className="rltc">Terms and Conditions</h4>
       <p>
         1. By using Meal Match, you agree to these Terms and Conditions. If you do not agree, you may not use the Platform. We will run a background check to confirm this is a real business to allow your account to be accepted.
         2. MealMatch facilitates business connections by revealing contact email information once a match between businesses is confirmed. All further communication between parties occurs off-platform. To proceed with connections, users must interact with designated stages on the Platform.
@@ -97,7 +97,7 @@ function RestaurantSignup() {
         6. We reserve the right to modify these Terms and Conditions at any time. Continued use of the Platform constitutes acceptance of any changes.
       </p>
     </div>
-    <button className="restaurant-button" onClick={handleSignup}>I ACCEPT</button>
+    <button className="rlrestaurant-button" onClick={handleSignup}>I ACCEPT</button>
     </div>
   );
 }

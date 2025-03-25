@@ -2,15 +2,17 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Hind&family=Noto+Serif:wght@700&display=swap');
 
-.background {
-  background-color: #F7CF84;
+.slbackground {
+  background-color: #fae3b2;
   padding: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-top: 5%;
+  padding-bottom: 5%;
 }
 
-.login-title {
+.sllogin-title {
   font-family: 'Noto Serif', serif;
   font-weight: bold;
   margin-bottom: 20px;
@@ -22,9 +24,10 @@
   margin: 0;
 }
 
-.shelter-button{
+.slshelter-button{
   width: 80%;
   padding: 10px;
+  background-color: #F19B5A;
   color: white;
   font-weight: bold;
   border: none;
@@ -33,16 +36,16 @@
   cursor: pointer;
 }
 
-.title {
+.sltitle {
   display: flex;
   align-items: center;
   justify-content: flex-start;
   width: 80%;
   position: relative;
+  padding-bottom: 1%;
 }
 
-
-.signup-container {
+.slsignup-container {
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -54,13 +57,13 @@
 }
 
 input {
-  margin: -10px 0;
-  padding: 8px;
-  width: 97%;
-  max-width: 1000px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  margin-bottom: 10px;
+    margin: -10px 0;
+    padding: 8px;
+    width: 97%;
+    max-width: 1000px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 10px;
 }
 
 body {
@@ -70,20 +73,20 @@ body {
   font-family: 'Hind', sans-serif;
 }
 
-.account-container {
+.slaccount-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding-top: 30px;
 }
 
-.account-title {
+.slaccount-title {
   font-family: 'Noto Serif', serif;
   font-weight: bold;
   margin-bottom: 20px;
 }
 
-.account-input {
+.slaccount-input {
   width: 300px;
   padding: 10px;
   margin: 8px 0;
@@ -92,19 +95,7 @@ body {
   font-size: 16px;
 }
 
-.account-button {
-  width: 300px;
-  padding: 10px;
-  background-color: #677A3F;
-  color: white;
-  font-weight: bold;
-  border: none;
-  border-radius: 20px;
-  margin-top: 10px;
-  cursor: pointer;
-}
-
-.terms-text {
+.slterms-text {
   margin-top: 20px;
   font-size: 14px;
   color: #666;
@@ -112,11 +103,11 @@ body {
   text-align: justify;
 }
 
-.tc {
+.sltc {
   margin-bottom: -10px;
 }
 
-.back-button {
+.slback-button {
   width: 150px;
   padding: 10px;
   background-color: #677A3F;

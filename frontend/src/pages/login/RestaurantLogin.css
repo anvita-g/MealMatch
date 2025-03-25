@@ -2,15 +2,17 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Hind&family=Noto+Serif:wght@700&display=swap');
 
-.background {
-  background-color: #F7CF84;
+.rlbackground {
+  background-color: #fae3b2;
   padding: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-top: 5%;
+  padding-bottom: 5%;
 }
 
-.login-title {
+.rllogin-title {
   font-family: 'Noto Serif', serif;
   font-weight: bold;
   margin-bottom: 20px;
@@ -22,9 +24,10 @@
   margin: 0;
 }
 
-.restaurant-button{
+.rlrestaurant-button{
   width: 80%;
   padding: 10px;
+  background-color: #F19B5A;
   color: white;
   font-weight: bold;
   border: none;
@@ -33,16 +36,17 @@
   cursor: pointer;
 }
 
-.title {
+.rltitle {
   display: flex;
   align-items: center;
   justify-content: flex-start;
   width: 80%;
   position: relative;
+  padding-bottom: 1%;
 }
 
 
-.signup-container {
+.rlsignup-container {
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -70,20 +74,20 @@ body {
   font-family: 'Hind', sans-serif;
 }
 
-.account-container {
+.rlaccount-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding-top: 30px;
 }
 
-.account-title {
+.rlaccount-title {
   font-family: 'Noto Serif', serif;
   font-weight: bold;
   margin-bottom: 20px;
 }
 
-.account-input {
+.rlaccount-input {
   width: 300px;
   padding: 10px;
   margin: 8px 0;
@@ -92,19 +96,7 @@ body {
   font-size: 16px;
 }
 
-.account-button {
-  width: 300px;
-  padding: 10px;
-  background-color: #677A3F;
-  color: white;
-  font-weight: bold;
-  border: none;
-  border-radius: 20px;
-  margin-top: 10px;
-  cursor: pointer;
-}
-
-.terms-text {
+.rlterms-text {
   margin-top: 20px;
   font-size: 14px;
   color: #666;
@@ -112,11 +104,11 @@ body {
   text-align: justify;
 }
 
-.tc {
+.rltc {
   margin-bottom: -10px;
 }
 
-.back-button {
+.rlback-button {
   width: 150px;
   padding: 10px;
   background-color: #677A3F;
