@@ -1,3 +1,4 @@
+
 import React from 'react';
 import './HomePreLogin.css';
 import banner from '/Users/nishita/MealMatch/frontend/src/assets/banner.png';
@@ -41,8 +42,8 @@ const HomePostLogin = () => {
             <a
               className="orange-button"
               href="https://www.example.com/donation-faq"
-              target="_blank"
-              rel="noopener noreferrer"
+              target="https://www.fda.gov/"
+              rel="https://www.fda.gov/"
             >
               DONATION FAQ
               

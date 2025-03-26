@@ -53,8 +53,8 @@ const Resources = () => {
             <a
               className="orange-button"
               href="https://www.fda.gov/food/food-donation"
-              target="_blank"
-              rel="noopener noreferrer"
+              target="https://www.fda.gov/"
+              rel="https://www.fda.gov/"
             >
               FDA REGULATIONS
             </a>
