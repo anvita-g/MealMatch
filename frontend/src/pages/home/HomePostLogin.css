@@ -1,1 +1,112 @@
 /* HomePostLogin.css */
+@import url('https://fonts.googleapis.com/css2?family=Hind:wght@400;600&display=swap');
+
+.resources-wrapper {
+    background-color: #ffffff;
+    padding: 40px 20px;
+    font-family: 'Hind', sans-serif;
+  }
+  
+  .text-section {
+    background-color: #FAE2B5;
+    max-width: 900px;
+    margin: 0 auto 60px auto;
+    text-align: center;
+    color: #000;
+  }
+
+  /* Full-width orange section */
+  .orange-section {
+    width: 100%;
+    background-color: #FAE2B5;
+    padding: 40px 20px;
+    box-sizing: border-box;
+  }
+  
+  /* Centered text with max width */
+  .orange-content {
+    max-width: 900px;
+    margin: 0 auto;
+    color: #000;
+    font-family: 'Hind', sans-serif;
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+  
+  
+  .text-section h1 {
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  
+  .text-section p {
+    font-size: 1rem;
+    margin-top: 10px;
+    line-height: 2;
+    color: #2a1a0b;
+  }
+  
+  .resources-section {
+    text-align: center;
+  }
+
+  .banner {
+    width: 100vw;
+    overflow: hidden;
+  }
+  
+  .banner img {
+    width: 100%;
+    height: auto;
+    display: block;
+   
+    object-fit: cover;
+  }
+  
+  .resources-section h2 {
+    font-size: 2rem;
+    margin-bottom: 30px;
+    color: #000;
+  }
+  
+  .resource-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 40px;
+  }
+  
+  .resource-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 160px;
+  }
+  
+  .resource-card img {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    margin-bottom: 12px;
+  }
+
+  .orange-button {
+    background-color: #f4a261;
+    color: white;
+    padding: 10px 28px;
+    border: none;
+    border-radius: 700px;
+    font-weight: 700;
+    font-size: 1rem;
+    line-height: 1.4;
+    text-align: center;
+    display: inline-block;
+    width: 100px; 
+
+  }
+  
+  .orange-button:hover {
+    background-color: #e76f51;
+  }
+  
