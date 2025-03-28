@@ -1,10 +1,10 @@
 import React from 'react';
 import './HomePreLogin.css';
-import banner from '/Users/nishita/MealMatch/frontend/src/assets/banner.png';
-import shelterIcon from '/Users/nishita/MealMatch/frontend/src/assets/i1.png';
-import restaurantIcon from '/Users/nishita/MealMatch/frontend/src/assets/i2.png';
-import faqIcon from '/Users/nishita/MealMatch/frontend/src/assets/i4.png';
-import fdaIcon from '/Users/nishita/MealMatch/frontend/src/assets/i6.png';
+import banner from '../../assets/banner.png';
+import shelterIcon from '../../assets/i1.png';
+import restaurantIcon from '../../assets/i2.png';
+import faqIcon from '../../assets/i4.png';
+import fdaIcon from '../../assets/i6.png';
 
 const Resources = () => {
   return (
