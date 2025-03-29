@@ -1,54 +1,159 @@
-/* Use with Profile.css – only overrides / adds */
 .preference-flex {
-    display: flex;
-    gap: 50px;
-    flex-wrap: wrap;
-  }
+  display: flex;
+  gap: 50px;
+  flex-wrap: wrap;
+}
+
+.radius-slider {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.radius-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  margin-top: 6px;
+}
+
+.tag.inactive {
+  background-color: white;
+  color: #F19B5A;
+  border: 1px solid #F19B5A;
+}
+
+.tag-input-row {
+  display: flex;
+  gap: 5px;
+  margin-bottom: 10px;
+}
+
+.tag-input-row input {
+  padding: 6px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  flex-grow: 1;
+}
+
+.tag-input-row button {
+  padding: 6px 12px;
+  background-color: white;
+  color: black;
+  border: 1px solid black;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.remove-x {
+  margin-left: 6px;
+  cursor: pointer;
+  font-weight: normal;
+}
   
-  .radius-slider {
-    width: 100%;
-    margin-top: 10px;
-  }
-  
-  .radius-labels {
-    display: flex;
-    justify-content: space-between;
-    font-size: 13px;
-    margin-top: 6px;
-  }
-  
-  .tag.inactive {
-    background-color: white;
-    color: #F19B5A;
-    border: 1px solid #F19B5A;
-  }
-  
-  .tag-input-row {
-    display: flex;
-    gap: 5px;
-    margin-bottom: 10px;
-  }
-  
-  .tag-input-row input {
-    padding: 6px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    flex-grow: 1;
-  }
-  
-  .tag-input-row button {
-    padding: 6px 12px;
-    background-color: white;
-    color: black;
-    border: 1px solid black;
-    font-weight: bold;
-    cursor: pointer;
-  }
-  
-  .remove-x {
-    margin-left: 6px;
-    cursor: pointer;
-    font-weight: normal;
-  }
-  
+.preference-flex .tag,
+.profile-section .tag {
+  border-radius: 0;
+  cursor: pointer;
+}
+
+/* Hover = pointer for ALL tags */
+.tag {
+  cursor: pointer;
+}
+
+.profile-section .tags {
+  justify-content: flex-start; /* instead of center */
+}
+
+.custom-dropdown {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 12px;
+  font-family: 'Hind', sans-serif;
+  width: 100%;
+  max-width: 300px;
+}
+
+.dropdown-trigger {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  background-color: white;
+  cursor: pointer;
+  font-size: 14px;
+  user-select: none;
+  border-radius: 0; /* remove round corners */
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%; /* right below trigger */
+  left: 0;
+  right: 0;
+  border: 1px solid #ccc;
+  border-top: none; /* no double border */
+  background-color: white;
+  z-index: 1;
+  max-height: 200px;
+  overflow-y: auto;
+  border-radius: 0; /* remove round corners */
+}
+
+.dropdown-option {
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  border-bottom: 1px solid #eee;
+}
+
+.dropdown-option:last-child {
+  border-bottom: none;
+}
+
+.dropdown-option:hover {
+  background-color: #C9C466;
+  color: white;
+}
+
+.radius-slider {
+  width: 100%;
+  margin-top: 10px;
+  appearance: none;
+  height: 4px;
+  background: #ccc;
+  outline: none;
+  position: relative;
+  padding: 0;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.radius-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  background: #F19B5A;
+  border-radius: 50%;
+  cursor: pointer;
+  margin-top: -7px; /* centers thumb on track */
+}
+
+.radius-slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  background: #F19B5A;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* Optional: add track fill color (before thumb) */
+.radius-slider::-webkit-slider-runnable-track {
+  background: #ccc;
+  height: 4px;
+}
+
+.radius-slider::-moz-range-track {
+  background: #ccc;
+  height: 4px;
+}

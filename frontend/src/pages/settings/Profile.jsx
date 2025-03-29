@@ -210,7 +210,7 @@ function Profile() {
         <div className="profile-section">
           <h4>CONTACT INFORMATION</h4>
           <p>
-            <strong>Primary Name:</strong>{" "}
+            <strong>Establishment Name:</strong>{" "}
             {isEditing ? (
               <input type="text" name="name" value={editableData.name} onChange={handleChange} className="editable-input" />
             ) : (
@@ -249,12 +249,18 @@ function Profile() {
             <strong>Description:</strong>{" "}
             <span className="highlight">
               {isEditing ? (
-                <textarea name="description" value={editableData.description} onChange={handleChange} className="editable-textarea" />
+                <textarea
+                  name="description"
+                  value={editableData.description}
+                  onChange={handleChange}
+                  className="editable-textarea"
+                />
               ) : (
                 profile.description || "No Description Available"
               )}
             </span>
           </p>
+
         </div>
 
         <div className="profile-section">
