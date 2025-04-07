@@ -1,1 +1,101 @@
 /* Tracking.css */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #F5F5F5;
+    margin: 0;
+    padding: 0;
+}
+
+.tracking-page {
+    padding: 20px;
+}
+
+.tracking-heading {
+    font-size: 2em;
+    text-align: center;
+    color: #6A5741;
+    background-color: #C9C466;
+    padding: 15px;
+    border-radius: 25px;
+}
+
+.tracking-hero {
+    text-align: center;
+    padding: 2rem 1rem;
+    background-color: #fff;
+}
+
+.tracking-title {
+    font-size: 2.5rem;
+    color: #1a1a1a;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.tracking-subtitle {
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 2rem;
+}
+
+.tracking-steps {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.tracking-step {
+    max-width: 220px;
+    text-align: center;
+}
+
+.step-circle {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 0.75rem auto;
+    border-radius: 50%;
+    border: 4px solid #e58c57;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.step-1 { border-color: #e1b978; }
+.step-2 { border-color: #e58c57; }
+.step-3 { border-color: #d4574a; }
+.step-4 { border-color: #e6a0b2; }
+
+.step-number {
+    font-weight: bold;
+    font-size: 1.25rem;
+}
+
+.step-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #666;
+    margin-top: 0.25rem;
+}
+
+.step-text h3 {
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 0.25rem;
+}
+
+.step-text p {
+    font-size: 0.85rem;
+    color: #666;
+}
+
+.no-match-message {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #444;
+    margin-top: 2rem;
+}
+ 

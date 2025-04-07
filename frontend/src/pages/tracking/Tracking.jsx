@@ -87,58 +87,73 @@ function Tracking() {
     };
 
     return (
-        <div className="match-request-page">
-            <h1>Tracking</h1>
-            {matches.length === 0 ? (
-                <p>No matches found.</p>
-            ) : (
-                <div className="match-cards">
-                    {matches.map((match) => (
-                        <div key={match.matchId} className="match-card">
-                            <h2>{match.name || "No Name"}</h2>
-                            <p><strong>Email:</strong> {match.email || "No Email"}</p>
-                            <p><strong>Phone:</strong> {match.phoneNumber || "No Phone"}</p>
-                            <p><strong>Address:</strong> {match.address || "No Address"}</p>
-                            <p><strong>Website:</strong> {match.website || "No Website"}</p>
-                            <p><strong>Description:</strong> {match.description || "No Description"}</p>
-                            <p><strong>Arrangement:</strong> {match.arrangement || "Not specified"}</p>
-                            <p>
-                                <strong>Tags:</strong>{" "}
-                                {match.tags && Array.isArray(match.tags) ? match.tags.join(", ") : "No Tags"}
-                            </p>
+        <div className="tracking-page">
+            <h1 className="tracking-heading">Tracking</h1>
+            <div className="tracking-hero">
+            <h1 className="tracking-title">Your Match</h1>
+            <p className="tracking-subtitle">
+                Follow four simple steps to connect, coordinate, track, and complete your food donation effortlessly.
+            </p>
 
-                            <button className="unmatch-button" onClick={() => handleUnmatch(match.matchId)}>
-                                Cancel Match
-                            </button>
-
-                            <h3>Confirmation Survey</h3>
-                            <label>
-                                Delivery Date:
-                                <input type="text" name="deliveryDate" value={confirmation.deliveryDate} onChange={handleConfirmationChange} />
-                            </label>
-                            <label>
-                                Time:
-                                <input type="text" name="time" value={confirmation.time} onChange={handleConfirmationChange} />
-                            </label>
-                            <label>
-                                Food Requirements:
-                                <input type="text" name="foodRequirements" value={confirmation.foodRequirements} onChange={handleConfirmationChange} />
-                            </label>
-                            <label>
-                                Transportation Notes:
-                                <input type="text" name="transportationNotes" value={confirmation.transportationNotes} onChange={handleConfirmationChange} />
-                            </label>
-                            <label>
-                                Food Storage Notes:
-                                <input type="text" name="foodStorageNotes" value={confirmation.foodStorageNotes} onChange={handleConfirmationChange} />
-                            </label>
-
-                            <button className="save-button" onClick={() => saveConfirmation(match.matchId)}>
-                                Save Confirmation
-                            </button>
+            <div className="tracking-steps">
+                {[1, 2, 3, 4].map((step) => (
+                    <div key={step} className="tracking-step">
+                        <div className={`step-circle step-${step}`}>
+                            <div className="step-number">0{step}</div>
+                            <div className="step-label">STEP</div>
                         </div>
-                    ))}
+                        <div className="step-text">
+                            {step === 1 && (
+                                <>
+                                    <h3>Review Your Match</h3>
+                                    <p>Check the details of your match! Ensure the partnership aligns with your needs before moving forward.</p>
+                                </>
+                            )}
+                            {step === 2 && (
+                                <>
+                                    <h3>Discuss the Details</h3>
+                                    <p>Communicate with your match to finalize the logistics for a smooth donation process.</p>
+                                </>
+                            )}
+                            {step === 3 && (
+                                <>
+                                    <h3>Track Progress</h3>
+                                    <p>Monitor the status of your donation as it moves through each stage until completion!</p>
+                                </>
+                            )}
+                            {step === 4 && (
+                                <>
+                                    <h3>Feedback</h3>
+                                    <p>Once the donation is complete, share your experience to help improve future matches!</p>
+                                </>
+                            )}
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
+            {matches.length === 0 ? (
+                <p className="no-match-message">
+                    No match currently.<br />
+                    We'll notify you when we find a suitable partner!
+                </p>
+                
+            ) : (
+                <div className="match-cards-container">
+        {matches.map((match) => (
+            <div key={match.id} className="match-card">
+                <div className="match-card-header">
+                    <h3>{match.partnerName}</h3>
+                    <span className={`status-badge status-${match.status.toLowerCase().replace(' ', '-')}`}>
+                        {match.status}
+                    </span>
                 </div>
+                <p className="match-description">{match.donationDetails}</p>
+                <p className="match-updated">Last updated: {match.lastUpdated}</p>
+                <button className="match-button">View Details</button>
+            </div>
+        ))}
+    </div>
             )}
         </div>
     );

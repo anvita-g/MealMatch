@@ -177,7 +177,7 @@ body {
   
   .availability-days span {
     display: inline-block;
-    width: 50px;
+    width: 100px;
     height: 30px;
     background-color: #F7CF84; /* Day background color */
     color: #6A5741;
@@ -188,7 +188,8 @@ body {
   }
   
   .availability-times {
-    display: flex;
+    display: grid;
+    grid-column: auto;
     gap: 15px;
   }
   
