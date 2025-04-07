@@ -4,10 +4,12 @@ body {
   }
   
   .match-request-page {
-    padding: 20px;
+    padding-bottom: 10%;
+    background-color: #FFFFFF;
   }
   
   h1.active-heading {
+    line-height: 0px;
     font-size: 2em;
     text-align: center;
     color: #6A5741;
@@ -17,24 +19,22 @@ body {
     text-align: center;
     margin-bottom: 30px;
   }
-  
-  .match-cards {
-    display: flex;
-    flex-wrap: wrap;
-    text-align: center;
-    gap: 20px;
-    justify-content: center;
-  }
-  
   .match-card {
-    background: #FFFFFF;
-    border-radius: 10px;
+    line-height: 20px;
+    background: #F5F5F5;
     padding: 20px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
     width: 300px;
     position: relative;
   }
-  
+
+
+  .searchBox{
+    background: #F7CF84;
+  }
+
+
+
   .match-card h2 {
     font-size: 1.5em;
     color: #6A5741;
@@ -43,8 +43,10 @@ body {
   
   .match-card p {
     color: #6A5741;
-    font-size: 1em;
+    font-size: .8em;
+    line-height: auto;
     margin-bottom: 10px;
+    text-align: left;
   }
   
   .tags {
@@ -53,18 +55,12 @@ body {
     margin-bottom: 15px;
   }
   
-  .tag {
-    padding: 8px 12px;
-    background-color: #F7CF84;
-    border-radius: 20px;
-    font-size: 0.9em;
-    color: #6A5741;
-  }
+
   .tag2{
-    padding: 8px 12px;
+    padding: 0px 12px;
     background-color: #C9C466;
-    border-radius: 20px;
-    font-size: 0.9em;
+    border-radius: 30px;
+    font-size: 1.2em;
     color: #6A5741;
   }
 
@@ -84,90 +80,39 @@ body {
     background-color: #C9C466;
   }
   
-  /* Layered Box Styling */
-  .match-card::before {
-    content: "";
-    position: absolute;
-    top: -20px;
-    left: -20px;
-    right: -20px;
-    bottom: -20px;
-    /* border:  5px solid #F19B5A; */
-    border-radius: 15px;
-    z-index: -1;
-  }
 
-  /* Layered Box Styling */
+
 .match-card {
     position: relative;
     text-align: center;
     align-items: center;
   }
-  
-  .match-card::before {
-    content: "";
-    position: absolute;
-    top: -10px;
-    left: -10px;
-    right: -10px;
-    bottom: -10px;
-    /* border: 5px solid #F19B5A; */
-    border-radius: 15px;
-    z-index: -1;
-  }
 
-  .match-cards {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px; /* Adds a gap between the cards */
-  justify-content: space-between;
-}
 .box1{
     margin-top: 20px;
     background-color: #FFFFFF;
     padding: 10px;
-}
-.match-card {
-  width: 30%; /* Adjust card width as needed */
-  background-color: #F5F5F5;
-  padding: 15px;
-  border-radius: 15px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    align-items: center;
+    justify-content: center;
 }
   
 .match-card h3 {
-    font-size: 1.2em;
+    font-size: .8em;
     color: #6A5741;
-    border-bottom: 2px solid #000; /* Black line under header */
+    border-top: 1px solid #000; 
     padding-bottom: 5px;
     margin-bottom: 10px;
   }
   
   .availability-days span {
-    margin-right: 5px;
-    font-size: 1em;
+    font-size: .8em;
     color: #6A5741;
   }
   
-  .availability-times span {
-    margin-right: 10px;
-    font-size: 0.9em;
-    color: #6A5741;
-  }
-  
-  .availability i {
-    color: #F19B5A;
-    margin-right: 5px;
-  }
-  
-  .delivery i {
-    color: #F19B5A;
-    margin-right: 10px;
-  }
   
   .delivery {
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
     margin-top: 15px;
     gap: 10px;
   }
@@ -182,7 +127,7 @@ body {
     display: inline-block;
     width: 100px;
     height: 30px;
-    background-color: #F7CF84; /* Day background color */
+    background-color: #F7CF84; 
     color: #6A5741;
     text-align: center;
     line-height: 30px;
@@ -191,9 +136,7 @@ body {
   }
   
   .availability-times {
-    display: grid;
-    grid-column: auto;
-    gap: 15px;
+    display: flex;
   }
   
   .availability-times span {
@@ -207,3 +150,46 @@ body {
     color: #F19B5A;
     margin-right: 5px;
   }
+  .outside{
+    padding: 50px;
+    margin-left: 10%;
+    margin-right: 10%;
+    border-bottom: 4px solid #000; /* Black line under header */
+  }
+
+  .search-results-grid {
+    display: grid;
+    grid-template-columns: 40% 1fr; /* 35% for search, 65% for matches */
+    gap: 20px;/* Gap between columns */
+    align-items: start;
+  }
+  
+  .searchBox {
+    background-color: #F7CF84;
+    /* padding: 16px; */
+    margin-left: 10%;
+    height: 100%;
+    position: relative;
+    top: 0;
+  }
+  
+  /* Container for match cards in two columns */
+  .match-cards {
+    /* margin-left: 5%; */
+    display: grid;
+    row-gap: 20px;
+    grid-template-columns: 1fr 1fr; /* Two cards per row */
+    /* gap: 5px; Gap between cards */
+  }
+
+
+  @media (max-width: 768px) {
+    .search-results-grid {
+      grid-template-columns: 1fr;
+    }
+  
+    .match-cards {
+      grid-template-columns: 1fr;
+    }
+  }
+  

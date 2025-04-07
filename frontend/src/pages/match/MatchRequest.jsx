@@ -3,12 +3,18 @@ import { db, auth } from "../../firebaseConfig";
 import { collection, query, where, getDocs, doc, updateDoc, setDoc, getDoc } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import "./MatchRequest.css";
+import Search from './Search';
 
 function MatchRequest() {
   const [role, setRole] = useState(null);
   const [topMatch, setTopMatch] = useState(null);
   const [matches, setMatches] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");  // Search query state
+  const [selectedDays, setSelectedDays] = useState([]);
+  const [selectedTimes, setSelectedTimes] = useState([]);
+  const [selectedTags, setSelectedTags] = useState([]);
+  const [radius, setRadius] = useState(25);
 
   const computeMatchScore = (currentUserData, match) => {
     let score = 0;
@@ -26,6 +32,7 @@ function MatchRequest() {
 
   useEffect(() => {
     const fetchMatches = async () => {
+      
       setLoading(true);
       const currentUser = auth.currentUser;
       if (!currentUser) {
@@ -48,16 +55,63 @@ function MatchRequest() {
         const oppositeCollection = currentRole === "restaurant" ? "shelters" : "restaurants";
         const matchesQuery = query(collection(db, oppositeCollection));
         const matchesSnapshot = await getDocs(matchesQuery);
+        const userLocation = userData.location;
         const matchesData = matchesSnapshot.docs.map((doc) => doc.data());
-        const scoredMatches = matchesData.map(match => ({ ...match, score: computeMatchScore(userData, match) }));
+        const scoredMatches = matchesData
+          .filter(match => filterMatchesBySearch(match, userLocation))
+          .map(match => ({ ...match, score: computeMatchScore(userData, match) }));
+
         scoredMatches.sort((a, b) => b.score - a.score);
+
         setTopMatch(scoredMatches[0] || null);
         setMatches(scoredMatches.slice(1));
+        
       } catch (error) {
         console.error("Error fetching matches:", error);
       }
       setLoading(false);
     };
+    function calculateDistance(lat1, lon1, lat2, lon2) {
+      const toRad = val => (val * Math.PI) / 180;
+      const R = 3958.8; // Radius of Earth in miles
+      const dLat = toRad(lat2 - lat1);
+      const dLon = toRad(lon2 - lon1);
+      const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      return R * c;
+    }
+    const filterMatchesBySearch = (match, userLocation) => {
+      // Filter by tags
+      const matchTags = match.tags || [];
+      if (selectedTags.length && !selectedTags.every(tag => matchTags.includes(tag))) {
+        return false;
+      }
+    
+      // Filter by days
+      const matchDays = match.availabilityDays || [];
+      if (selectedDays.length && !selectedDays.every(day => matchDays.includes(day))) {
+        return false;
+      }
+    
+      // Filter by times
+      const matchTimes = match.availabilityTimes || [];
+      if (selectedTimes.length && !selectedTimes.every(time => matchTimes.includes(time))) {
+        return false;
+      }
+    
+      // Filter by distance
+      if (match.location && userLocation) {
+        const dist = calculateDistance(userLocation.lat, userLocation.lng, match.location.lat, match.location.lng);
+        if (dist > radius) {
+          return false;
+        }
+      }
+    
+      return true;
+    };
+
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         fetchMatches();
@@ -66,6 +120,7 @@ function MatchRequest() {
         setTopMatch(null);
       }
     });
+
     return () => unsubscribe();
   }, []);
 
@@ -106,22 +161,41 @@ function MatchRequest() {
     }
   };
 
+  
+  // Filter matches based on search query
+  const filteredMatches = matches.filter(match =>
+    match.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    match.description.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   if (loading) return <p>Loading matches...</p>;
 
   return (
     <div className="match-request-page">
-      <h1 className="active-heading">Match Requests</h1>
+      {/* <h1 className="active-heading">Match Requests</h1> */}
+      
+      {/* Search Bar
+      <div className="search-bar">
+        <input
+          type="text"
+          placeholder="Search for matches..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+      </div> */}
+
       {topMatch && (
-        <div style={{ display: "flex", justifyContent: "center" }}>
+        <div className="outside" style={{display: "grid", justifyContent: "center", justifyItems: "center"}}>
+          <h2 style={{paddingBottom: "10%"}}>Top Match</h2>
           <div className="match-card">
-          <h2 className="tag2">Top Match</h2>
             <h2>{topMatch.name || "No Name"}</h2>
+            <span className="tag2">Active</span>
             <div className="box1">
+              <p style={{textAlign: "center"}}>{topMatch.description || "No Description"}</p>
               <p><strong>Email:</strong> {topMatch.email || "No Email"}</p>
               <p><strong>Phone:</strong> {topMatch.phoneNumber || "No Phone"}</p>
               <p><strong>Address:</strong> {topMatch.address || "No Address"}</p>
               <p><strong>Website:</strong> {topMatch.website || "No Website"}</p>
-              <p><strong>Description:</strong> {topMatch.description || "No Description"}</p>
               <p><strong>Arrangement:</strong> {topMatch.arrangement || "Not specified"}</p>
               <div className="availability">
                 <h3>AVAILABILITY</h3>
@@ -154,21 +228,36 @@ function MatchRequest() {
           </div>
         </div>
       )}
-      {matches.length > 0 && <h2 style={{ textAlign: "center", marginTop: "20px" }}>Explore more options</h2>}
-      {matches.length === 0 ? (
+
+      {filteredMatches.length > 0 && <h2 style={{marginTop: "10%", fontWeight: "bolder",
+        paddingLeft: "5%", paddingRight: "5%"
+      }}>Explore more options</h2>}
+
+      {filteredMatches.length === 0 ? (
         <p>No matches found.</p>
       ) : (
-        <div className="match-cards">
-          {matches.map((match, index) => (
+          <div className="search-results-grid">
+            <div className="searchBox">
+            <Search 
+              selectedDays={selectedDays}
+              setSelectedDays={setSelectedDays}
+              selectedTimes={selectedTimes}
+              setSelectedTimes={setSelectedTimes}
+              selectedTags={selectedTags}
+              setSelectedTags={setSelectedTags}
+              radius={radius}
+              setRadius={setRadius}
+            />
+          </div>
+          <div className="match-cards">
+          {filteredMatches.map((match, index) => (
             <div key={index} className="match-card">
               <h2>{match.name || "No Name"}</h2>
               <span className="tag2">Active</span>
               <div className="box1">
-                <p><strong>Email:</strong> {match.email || "No Email"}</p>
-                <p><strong>Phone:</strong> {match.phoneNumber || "No Phone"}</p>
+                <p style={{textAlign: "center"}}>{match.description || "No Description"}</p>
                 <p><strong>Address:</strong> {match.address || "No Address"}</p>
                 <p><strong>Website:</strong> {match.website || "No Website"}</p>
-                <p><strong>Description:</strong> {match.description || "No Description"}</p>
                 <p><strong>Arrangement:</strong> {match.arrangement || "Not specified"}</p>
                 <div className="availability">
                   <h3>AVAILABILITY</h3>
@@ -201,6 +290,9 @@ function MatchRequest() {
             </div>
           ))}
         </div>
+        </div>
+
+        
       )}
     </div>
   );
