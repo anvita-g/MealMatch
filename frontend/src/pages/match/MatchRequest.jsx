@@ -10,6 +10,20 @@ function MatchRequest() {
   const [matches, setMatches] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const computeMatchScore = (currentUserData, match) => {
+    let score = 0;
+    if (currentUserData.arrangement && match.arrangement && currentUserData.arrangement === match.arrangement) {
+      score += 10;
+    }
+    if (currentUserData.description && match.description) {
+      const userDescWords = currentUserData.description.toLowerCase().split(/\s+/);
+      const matchDescWords = match.description.toLowerCase().split(/\s+/);
+      const commonWords = userDescWords.filter(word => matchDescWords.includes(word));
+      score += commonWords.length;
+    }
+    return score;
+  };
+
   useEffect(() => {
     const fetchMatches = async () => {
       setLoading(true);
@@ -35,8 +49,10 @@ function MatchRequest() {
         const matchesQuery = query(collection(db, oppositeCollection));
         const matchesSnapshot = await getDocs(matchesQuery);
         const matchesData = matchesSnapshot.docs.map((doc) => doc.data());
-        setTopMatch(matchesData[0] || null);
-        setMatches(matchesData.slice(1));
+        const scoredMatches = matchesData.map(match => ({ ...match, score: computeMatchScore(userData, match) }));
+        scoredMatches.sort((a, b) => b.score - a.score);
+        setTopMatch(scoredMatches[0] || null);
+        setMatches(scoredMatches.slice(1));
       } catch (error) {
         console.error("Error fetching matches:", error);
       }
@@ -96,49 +112,48 @@ function MatchRequest() {
     <div className="match-request-page">
       <h1 className="active-heading">Match Requests</h1>
       {topMatch && (
-  <div style={{ textAlign: "center", display: "flex", justifyContent: "center" }}>
-    <div className="match-card">
-      <h2>{topMatch.name || "No Name"}</h2>
-      <span className="tag2">Top Match</span>
-      <div className="box1">
-        <p><strong>Email:</strong> {topMatch.email || "No Email"}</p>
-        <p><strong>Phone:</strong> {topMatch.phoneNumber || "No Phone"}</p>
-        <p><strong>Address:</strong> {topMatch.address || "No Address"}</p>
-        <p><strong>Website:</strong> {topMatch.website || "No Website"}</p>
-        <p><strong>Description:</strong> {topMatch.description || "No Description"}</p>
-        <p><strong>Arrangement:</strong> {topMatch.arrangement || "Not specified"}</p>
-        <div className="availability">
-          <h3>AVAILABILITY</h3>
-          <div className="availability-days">
-            <span>Mon</span>
-            <span>Tue</span>
-            <span>Wed</span>
-            <span>Thu</span>
-            <span>Fri</span>
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <div className="match-card">
+            <h2>{topMatch.name || "No Name"}</h2>
+            <span className="tag2">Top Match</span>
+            <div className="box1">
+              <p><strong>Email:</strong> {topMatch.email || "No Email"}</p>
+              <p><strong>Phone:</strong> {topMatch.phoneNumber || "No Phone"}</p>
+              <p><strong>Address:</strong> {topMatch.address || "No Address"}</p>
+              <p><strong>Website:</strong> {topMatch.website || "No Website"}</p>
+              <p><strong>Description:</strong> {topMatch.description || "No Description"}</p>
+              <p><strong>Arrangement:</strong> {topMatch.arrangement || "Not specified"}</p>
+              <div className="availability">
+                <h3>AVAILABILITY</h3>
+                <div className="availability-days">
+                  <span>Mon</span>
+                  <span>Tue</span>
+                  <span>Wed</span>
+                  <span>Thu</span>
+                  <span>Fri</span>
+                </div>
+                <div className="availability-times">
+                  <span><i className="fa fa-sun"></i> Morning</span>
+                  <span><i className="fa fa-sun"></i> Afternoon</span>
+                </div>
+              </div>
+              <div className="delivery">
+                <i className="fa fa-truck"></i> Delivery
+                <i className="fa fa-location-arrow"></i> Pickup
+              </div>
+              <h3>TAGS</h3>
+              <div className="tags">
+                <span className="tag">Vegan</span>
+                <span className="tag">Halal</span>
+                <span className="tag">Gluten-Free</span>
+              </div>
+            </div>
+            <button className="request-button" onClick={() => handleRequest(topMatch)}>
+              Request
+            </button>
           </div>
-          <div className="availability-times">
-            <span><i className="fa fa-sun"></i> Morning</span>
-            <span><i className="fa fa-sun"></i> Afternoon</span>
-          </div>
         </div>
-        <div className="delivery">
-          <i className="fa fa-truck"></i> Delivery
-          <i className="fa fa-location-arrow"></i> Pickup
-        </div>
-        <h3>TAGS</h3>
-        <div className="tags">
-          <span className="tag">Vegan</span>
-          <span className="tag">Halal</span>
-          <span className="tag">Gluten-Free</span>
-        </div>
-      </div>
-      <button className="request-button" onClick={() => handleRequest(topMatch)}>
-        Request
-      </button>
-    </div>
-  </div>
-)}
-
+      )}
       {matches.length > 0 && <h2 style={{ textAlign: "center", marginTop: "20px" }}>Explore more options</h2>}
       {matches.length === 0 ? (
         <p>No matches found.</p>
