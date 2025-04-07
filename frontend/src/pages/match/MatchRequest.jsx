@@ -114,8 +114,8 @@ function MatchRequest() {
       {topMatch && (
         <div style={{ display: "flex", justifyContent: "center" }}>
           <div className="match-card">
+          <h2 className="tag2">Top Match</h2>
             <h2>{topMatch.name || "No Name"}</h2>
-            <span className="tag2">Top Match</span>
             <div className="box1">
               <p><strong>Email:</strong> {topMatch.email || "No Email"}</p>
               <p><strong>Phone:</strong> {topMatch.phoneNumber || "No Phone"}</p>

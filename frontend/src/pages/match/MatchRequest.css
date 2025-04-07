@@ -67,6 +67,7 @@ body {
     font-size: 0.9em;
     color: #6A5741;
   }
+
   
   .request-button {
     background-color: #F19B5A;
@@ -99,6 +100,8 @@ body {
   /* Layered Box Styling */
 .match-card {
     position: relative;
+    text-align: center;
+    align-items: center;
   }
   
   .match-card::before {
