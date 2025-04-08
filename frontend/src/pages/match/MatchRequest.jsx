@@ -1,25 +1,45 @@
 import React, { useState, useEffect } from "react";
 import { db, auth } from "../../firebaseConfig";
-import { collection, query, where, getDocs, doc, updateDoc, setDoc, getDoc } from "firebase/firestore";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  doc,
+  updateDoc,
+  setDoc,
+  getDoc
+} from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import "./MatchRequest.css";
-import Search from './Search';
+import Search from "./Search";
 
 function MatchRequest() {
   const [role, setRole] = useState(null);
   const [topMatch, setTopMatch] = useState(null);
   const [matches, setMatches] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState("");  // Search query state
+
+  const [searchQuery, setSearchQuery] = useState("");
   const [selectedDays, setSelectedDays] = useState([]);
   const [selectedTimes, setSelectedTimes] = useState([]);
   const [selectedDelivery, setSelectedDelivery] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
   const [radius, setRadius] = useState(25);
 
+  const [allMatches, setAllMatches] = useState([]);
+  const [userLocation, setUserLocation] = useState(null);
+
+  const [sentMatches, setSentMatches] = useState(new Set());
+
   const computeMatchScore = (currentUserData, match) => {
     let score = 0;
-    if (currentUserData.arrangement && match.arrangement && currentUserData.arrangement === match.arrangement) {
+    if (
+      currentUserData.arrangement &&
+      match.arrangement &&
+      typeof match.arrangement === "string" &&
+      currentUserData.arrangement.toLowerCase() === match.arrangement.toLowerCase()
+    ) {
       score += 10;
     }
     if (currentUserData.description && match.description) {
@@ -32,9 +52,8 @@ function MatchRequest() {
   };
 
   useEffect(() => {
+    setLoading(true);
     const fetchMatches = async () => {
-      
-      setLoading(true);
       const currentUser = auth.currentUser;
       if (!currentUser) {
         setLoading(false);
@@ -51,75 +70,28 @@ function MatchRequest() {
           return;
         }
         const userData = usersSnapshot.docs[0].data();
-        const currentRole = userData.role;
-        setRole(currentRole);
-        const oppositeCollection = currentRole === "restaurant" ? "shelters" : "restaurants";
+        setRole(userData.role);
+        setUserLocation(userData.location || null);
+
+        const oppositeCollection = userData.role === "restaurant" ? "shelters" : "restaurants";
         const matchesQuery = query(collection(db, oppositeCollection));
         const matchesSnapshot = await getDocs(matchesQuery);
-        const userLocation = userData.location;
-        const matchesData = matchesSnapshot.docs.map((doc) => doc.data());
-        const scoredMatches = matchesData
-          .filter(match => filterMatchesBySearch(match, userLocation))
-          .map(match => ({ ...match, score: computeMatchScore(userData, match) }));
-
-        scoredMatches.sort((a, b) => b.score - a.score);
-
+        const fetchedMatches = matchesSnapshot.docs.map(doc => doc.data());
+        const scoredMatches = fetchedMatches.map(match => ({
+          ...match,
+          score: computeMatchScore(userData, match)
+        }));
+        scoredMatches.sort((a, b) => (b.score || 0) - (a.score || 0));
+        setAllMatches(scoredMatches);
         setTopMatch(scoredMatches[0] || null);
         setMatches(scoredMatches.slice(1));
-        
       } catch (error) {
         console.error("Error fetching matches:", error);
       }
       setLoading(false);
     };
-    function calculateDistance(lat1, lon1, lat2, lon2) {
-      const toRad = val => (val * Math.PI) / 180;
-      const R = 3958.8; // Radius of Earth in miles
-      const dLat = toRad(lat2 - lat1);
-      const dLon = toRad(lon2 - lon1);
-      const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
-                Math.sin(dLon / 2) * Math.sin(dLon / 2);
-      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-      return R * c;
-    }
-    const filterMatchesBySearch = (match, userLocation) => {
-      // Filter by tags
-      const matchTags = match.tags || [];
-      if (selectedTags.length && !selectedTags.every(tag => matchTags.includes(tag))) {
-        return false;
-      }
-    
-      // Filter by days
-      const matchDays = match.availabilityDays || [];
-      if (selectedDays.length && !selectedDays.every(day => matchDays.includes(day))) {
-        return false;
-      }
-    
-      // Filter by times
-      const matchTimes = match.availabilityTimes || [];
-      if (selectedTimes.length && !selectedTimes.every(time => matchTimes.includes(time))) {
-        return false;
-      }
 
-      // Filter by delivery
-      const matchDelivery = match.arrangement || [];
-      if (selectedDelivery.length && !selectedDelivery.every(delivery => matchDelivery.includes(delivery))) {
-        return false;
-      }
-    
-      // Filter by distance
-      if (match.location && userLocation) {
-        const dist = calculateDistance(userLocation.lat, userLocation.lng, match.location.lat, match.location.lng);
-        if (dist > radius) {
-          return false;
-        }
-      }
-    
-      return true;
-    };
-
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, user => {
       if (user) {
         fetchMatches();
       } else {
@@ -127,11 +99,87 @@ function MatchRequest() {
         setTopMatch(null);
       }
     });
-
     return () => unsubscribe();
   }, []);
 
-  const handleRequest = async (match) => {
+  useEffect(() => {
+    async function fetchSentRequests() {
+      const currentUser = auth.currentUser;
+      if (!currentUser || !role) return;
+      let q;
+      if (role === "restaurant") {
+        q = query(collection(db, "matches"), where("restaurantEmail", "==", currentUser.email));
+      } else {
+        q = query(collection(db, "matches"), where("shelterEmail", "==", currentUser.email));
+      }
+      try {
+        const snapshot = await getDocs(q);
+        const emailSet = new Set();
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          if (role === "restaurant") {
+            if (data.shelterEmail) emailSet.add(data.shelterEmail);
+          } else {
+            if (data.restaurantEmail) emailSet.add(data.restaurantEmail);
+          }
+        });
+        setSentMatches(emailSet);
+      } catch (error) {
+        console.error("Error fetching sent match requests:", error);
+      }
+    }
+    fetchSentRequests();
+  }, [role]);
+
+  const filterMatchesByDBFields = match => {
+    if (selectedTags.length > 0) {
+      if (!match.tags || !Array.isArray(match.tags)) return false;
+      const matchTagsLower = match.tags.map(t => t.toLowerCase());
+      if (!selectedTags.every(tag => matchTagsLower.includes(tag.toLowerCase()))) {
+        return false;
+      }
+    }
+    if (selectedDays.length > 0) {
+      if (!match.days || !Array.isArray(match.days)) return false;
+      const matchDaysUpper = match.days.map(d => d.toUpperCase());
+      if (!selectedDays.every(day => matchDaysUpper.includes(day.toUpperCase()))) {
+        return false;
+      }
+    }
+    if (selectedTimes.length > 0) {
+      if (!match.times || !Array.isArray(match.times)) return false;
+      const matchTimesUpper = match.times.map(t => t.toUpperCase());
+      if (!selectedTimes.every(time => matchTimesUpper.includes(time.toUpperCase()))) {
+        return false;
+      }
+    }
+    if (selectedDelivery.length > 0) {
+      if (!match.arrangement || typeof match.arrangement !== "string") return false;
+      const arrangementStr = String(match.arrangement).toLowerCase();
+      if (!selectedDelivery.some(sel => arrangementStr === sel.toLowerCase())) {
+        return false;
+      }
+    }
+    return true;
+  };
+
+  const handleApplyFilter = () => {
+    let filtered = allMatches;
+    if (selectedDays.length || selectedTimes.length || selectedDelivery.length || selectedTags.length) {
+      filtered = allMatches.filter(filterMatchesByDBFields);
+    }
+    if (searchQuery) {
+      filtered = filtered.filter(match =>
+        (match.name && match.name.toLowerCase().includes(searchQuery.toLowerCase())) ||
+        (match.description && match.description.toLowerCase().includes(searchQuery.toLowerCase()))
+      );
+    }
+    filtered.sort((a, b) => (b.score || 0) - (a.score || 0));
+    setTopMatch(filtered[0] || null);
+    setMatches(filtered.slice(1));
+  };
+
+  const handleRequest = async match => {
     const currentUser = auth.currentUser;
     if (!currentUser || !role) return;
     const matchedEmail = match.email;
@@ -157,10 +205,11 @@ function MatchRequest() {
           shelterEmail: role === "shelter" ? currentUser.email : matchedEmail,
           restaurantRequest: role === "restaurant",
           shelterRequest: role === "shelter",
-          createdAt: new Date(),
+          createdAt: new Date()
         };
         await setDoc(matchDocRef, newMatch);
         alert("Match request sent!");
+        setSentMatches(prev => new Set(prev).add(matchedEmail));
       }
     } catch (error) {
       console.error("Error processing match request:", error);
@@ -168,37 +217,29 @@ function MatchRequest() {
     }
   };
 
-  
-  // Filter matches based on search query
-  const filteredMatches = matches.filter(match =>
-    match.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    match.description.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
   if (loading) return <p>Loading matches...</p>;
+
+  const alreadySent = candidateEmail => sentMatches.has(candidateEmail);
 
   return (
     <div className="match-request-page">
-      {/* <h1 className="active-heading">Match Requests</h1> */}
-      
-      {/* Search Bar
-      <div className="search-bar">
+      {/* <div className="search-bar">
         <input
           type="text"
           placeholder="Search for matches..."
           value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
+          onChange={e => setSearchQuery(e.target.value)}
         />
       </div> */}
 
       {topMatch && (
-        <div className="outside" style={{display: "grid", justifyContent: "center", justifyItems: "center"}}>
-          <h1 style={{paddingBottom: "10%"}}>Top Match</h1>
+        <div className="outside" style={{ display: "grid", justifyContent: "center", justifyItems: "center" }}>
+          <h1 style={{ paddingBottom: "10%" }}>Top Match</h1>
           <div className="match-card">
             <h2>{topMatch.name || "No Name"}</h2>
             <span className="tag2">Active</span>
             <div className="box1">
-              <p style={{textAlign: "center"}}>{topMatch.description || "No Description"}</p>
+              <p style={{ textAlign: "center" }}>{topMatch.description || "No Description"}</p>
               <p><strong>Email:</strong> {topMatch.email || "No Email"}</p>
               <p><strong>Phone:</strong> {topMatch.phoneNumber || "No Phone"}</p>
               <p><strong>Address:</strong> {topMatch.address || "No Address"}</p>
@@ -207,15 +248,14 @@ function MatchRequest() {
               <div className="availability">
                 <h3>AVAILABILITY</h3>
                 <div className="availability-days">
-                  <span>Mon</span>
-                  <span>Tue</span>
-                  <span>Wed</span>
-                  <span>Thu</span>
-                  <span>Fri</span>
+                  {Array.isArray(topMatch.days) && topMatch.days.map((day, i) => (
+                    <span key={i}>{day}</span>
+                  ))}
                 </div>
                 <div className="availability-times">
-                  <span><i className="fa fa-sun"></i> Morning</span>
-                  <span><i className="fa fa-sun"></i> Afternoon</span>
+                  {Array.isArray(topMatch.times) && topMatch.times.map((time, i) => (
+                    <span key={i}><i className="fa fa-sun"></i> {time}</span>
+                  ))}
                 </div>
               </div>
               <div className="delivery">
@@ -224,84 +264,98 @@ function MatchRequest() {
               </div>
               <h3>TAGS</h3>
               <div className="tags">
-                <span className="tag">Vegan</span>
-                <span className="tag">Halal</span>
-                <span className="tag">Gluten-Free</span>
+                {Array.isArray(topMatch.tags) && topMatch.tags.length > 0 ? (
+                  topMatch.tags.map((tag, i) => (
+                    <span key={i} className="tag">{tag}</span>
+                  ))
+                ) : (
+                  <span className="tag">No Tags</span>
+                )}
               </div>
             </div>
-            <button className="request-button" onClick={() => handleRequest(topMatch)}>
-              Request
+            <button
+              className={`request-button ${alreadySent(topMatch.email) ? "sent" : ""}`}
+              onClick={() => !alreadySent(topMatch.email) && handleRequest(topMatch)}
+            >
+              {alreadySent(topMatch.email) ? "Sent" : "Request"}
             </button>
           </div>
         </div>
       )}
 
-      {filteredMatches.length > 0 && <h2 style={{marginTop: "10%", fontWeight: "bolder",
-        paddingLeft: "5%", paddingRight: "5%"
-      }}>Explore more options</h2>}
+      <div className="search-results-grid">
+        <div className="searchBox">
+          <Search
+            selectedDays={selectedDays}
+            setSelectedDays={setSelectedDays}
+            selectedTimes={selectedTimes}
+            setSelectedTimes={setSelectedTimes}
+            selectedTags={selectedTags}
+            setSelectedTags={setSelectedTags}
+            radius={radius}
+            setRadius={setRadius}
+            selectedDelivery={selectedDelivery}
+            setSelectedDelivery={setSelectedDelivery}
+          />
+          <button onClick={handleApplyFilter} className="request-button" style={{ marginTop: "20px" }}>
+            Apply Filters
+          </button>
+        </div>
 
-      {filteredMatches.length === 0 ? (
-        <p>No matches found.</p>
-      ) : (
-          <div className="search-results-grid">
-            <div className="searchBox">
-            <Search 
-              selectedDays={selectedDays}
-              setSelectedDays={setSelectedDays}
-              selectedTimes={selectedTimes}
-              setSelectedTimes={setSelectedTimes}
-              selectedTags={selectedTags}
-              setSelectedTags={setSelectedTags}
-              radius={radius}
-              setRadius={setRadius}
-              setSelectedDelivery={setSelectedDelivery}
-            />
-          </div>
-          <div className="match-cards">
-          {filteredMatches.map((match, index) => (
-            <div key={index} className="match-card">
-              <h2>{match.name || "No Name"}</h2>
-              <span className="tag2">Active</span>
-              <div className="box1">
-                <p style={{textAlign: "center"}}>{match.description || "No Description"}</p>
-                <p><strong>Address:</strong> {match.address || "No Address"}</p>
-                <p><strong>Website:</strong> {match.website || "No Website"}</p>
-                <p><strong>Arrangement:</strong> {match.arrangement || "Not specified"}</p>
-                <div className="availability">
-                  <h3>AVAILABILITY</h3>
-                  <div className="availability-days">
-                    <span>Mon</span>
-                    <span>Tue</span>
-                    <span>Wed</span>
-                    <span>Thu</span>
-                    <span>Fri</span>
+        <div className="match-cards">
+          {matches.length === 0 ? (
+            <p>No matches found.</p>
+          ) : (
+            matches.map((match, index) => (
+              <div key={index} className="match-card">
+                <h2>{match.name || "No Name"}</h2>
+                <span className="tag2">Active</span>
+                <div className="box1">
+                  <p style={{ textAlign: "center" }}>{match.description || "No Description"}</p>
+                  <p><strong>Email:</strong> {match.email || "No Email"}</p>
+                  <p><strong>Phone:</strong> {match.phoneNumber || "No Phone"}</p>
+                  <p><strong>Address:</strong> {match.address || "No Address"}</p>
+                  <p><strong>Website:</strong> {match.website || "No Website"}</p>
+                  <p><strong>Arrangement:</strong> {match.arrangement || "Not specified"}</p>
+                  <div className="availability">
+                    <h3>AVAILABILITY</h3>
+                    <div className="availability-days">
+                      {Array.isArray(match.days) && match.days.map((day, i) => (
+                        <span key={i}>{day}</span>
+                      ))}
+                    </div>
+                    <div className="availability-times">
+                      {Array.isArray(match.times) && match.times.map((time, i) => (
+                        <span key={i}><i className="fa fa-sun"></i> {time}</span>
+                      ))}
+                    </div>
                   </div>
-                  <div className="availability-times">
-                    <span><i className="fa fa-sun"></i> Morning</span>
-                    <span><i className="fa fa-sun"></i> Afternoon</span>
+                  <div className="delivery">
+                    <i className="fa fa-truck"></i> Delivery
+                    <i className="fa fa-location-arrow"></i> Pickup
+                  </div>
+                  <h3>TAGS</h3>
+                  <div className="tags">
+                    {Array.isArray(match.tags) && match.tags.length > 0 ? (
+                      match.tags.map((tag, i) => (
+                        <span key={i} className="tag">{tag}</span>
+                      ))
+                    ) : (
+                      <span className="tag">No Tags</span>
+                    )}
                   </div>
                 </div>
-                <div className="delivery">
-                  <i className="fa fa-truck"></i> Delivery
-                  <i className="fa fa-location-arrow"></i> Pickup
-                </div>
-                <h3>TAGS</h3>
-                <div className="tags">
-                  <span className="tag">Vegan</span>
-                  <span className="tag">Halal</span>
-                  <span className="tag">Gluten-Free</span>
-                </div>
+                <button
+                  className={`request-button ${alreadySent(match.email) ? "sent" : ""}`}
+                  onClick={() => !alreadySent(match.email) && handleRequest(match)}
+                >
+                  {alreadySent(match.email) ? "Sent" : "Request"}
+                </button>
               </div>
-              <button className="request-button" onClick={() => handleRequest(match)}>
-                Request
-              </button>
-            </div>
-          ))}
+            ))
+          )}
         </div>
-        </div>
-
-        
-      )}
+      </div>
     </div>
   );
 }
