@@ -5,13 +5,15 @@ const Search = ({
     selectedDays, setSelectedDays,
     selectedTimes, setSelectedTimes,
     selectedTags, setSelectedTags,
-    radius, setRadius
+    radius, setRadius, selectedDelivery, 
+    setSelectedDelivery
   }) => {   
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef(null);
 
   const days = ['M', 'T', 'W', 'Th', 'F', 'SA', 'SN'];
   const times = ['Morning', 'Afternoon', 'Evening'];
+  const delivery = ['Delivery', 'Pickup'];
   const tagOptions = ['Vegan', 'Halal', 'Gluten-Free', 'Kosher', 'Nut-Free'];
   const radiusOptions = [5, 10, 25, 50, 100];
 
@@ -106,6 +108,21 @@ const Search = ({
           </div>
         </div>
 
+        <div style={{paddingLeft: "5%", paddingRight: "5%"}}>
+            <h4>ARRANGEMENT</h4>
+            {/* <div className="tags" style={{justifyContent: "left"}}>
+                {delivery.map((o) => (
+                  <span style={{borderRadius: "0px", padding: "3% 7% 3% 7%"}}
+                    key={o}
+                    className={`tag ${selectedDelivery.includes(o) ? '' : 'inactive'}`}
+                    onClick={() => toggleSelection(o, selectedDelivery, setSelectedDelivery)}
+                  >
+                    {o}
+                  </span>
+                ))}
+            </div> */}
+        </div>
+        
         <div style={{paddingLeft: "5%", paddingRight: "5%"}}>
           <h4>TAGS</h4>
           <div className="custom-dropdown" ref={dropdownRef}>

@@ -13,6 +13,7 @@ function MatchRequest() {
   const [searchQuery, setSearchQuery] = useState("");  // Search query state
   const [selectedDays, setSelectedDays] = useState([]);
   const [selectedTimes, setSelectedTimes] = useState([]);
+  const [selectedDelivery, setSelectedDelivery] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
   const [radius, setRadius] = useState(25);
 
@@ -98,6 +99,12 @@ function MatchRequest() {
       // Filter by times
       const matchTimes = match.availabilityTimes || [];
       if (selectedTimes.length && !selectedTimes.every(time => matchTimes.includes(time))) {
+        return false;
+      }
+
+      // Filter by delivery
+      const matchDelivery = match.arrangement || [];
+      if (selectedDelivery.length && !selectedDelivery.every(delivery => matchDelivery.includes(delivery))) {
         return false;
       }
     
@@ -186,7 +193,7 @@ function MatchRequest() {
 
       {topMatch && (
         <div className="outside" style={{display: "grid", justifyContent: "center", justifyItems: "center"}}>
-          <h2 style={{paddingBottom: "10%"}}>Top Match</h2>
+          <h1 style={{paddingBottom: "10%"}}>Top Match</h1>
           <div className="match-card">
             <h2>{topMatch.name || "No Name"}</h2>
             <span className="tag2">Active</span>
@@ -247,6 +254,7 @@ function MatchRequest() {
               setSelectedTags={setSelectedTags}
               radius={radius}
               setRadius={setRadius}
+              setSelectedDelivery={setSelectedDelivery}
             />
           </div>
           <div className="match-cards">

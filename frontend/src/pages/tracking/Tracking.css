@@ -45,6 +45,8 @@ body {
     gap: 2rem;
     max-width: 1000px;
     margin: 0 auto;
+    padding-bottom: 30px;
+    border-bottom: 1px solid #000; 
 }
 
 .tracking-step {
@@ -64,10 +66,22 @@ body {
     justify-content: center;
 }
 
-.step-1 { border-color: #e1b978; }
-.step-2 { border-color: #e58c57; }
-.step-3 { border-color: #d4574a; }
-.step-4 { border-color: #e6a0b2; }
+.step-1 { 
+    border-color: #e1b978; 
+    border-width: 15px;
+}
+.step-2 { 
+    border-color: #e58c57;
+    border-width: 15px; 
+}
+.step-3 { 
+    border-color: #d4574a; 
+    border-width: 15px;
+}
+.step-4 { 
+    border-color: #e6a0b2; 
+    border-width: 15px;
+}
 
 .step-number {
     font-weight: bold;
@@ -95,6 +109,7 @@ body {
 .no-match-message {
     text-align: center;
     font-size: 1.2rem;
+    font-weight: bolder;
     color: #444;
     margin-top: 2rem;
 }

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { auth, db } from "../../firebaseConfig";
 import { collection, query, where, getDocs, doc, updateDoc, setDoc } from "firebase/firestore";
 import "./Tracking.css";
+import Tracker from './Tracker';
 
 function Tracking() {
     const [matches, setMatches] = useState([]);
@@ -87,8 +88,8 @@ function Tracking() {
     };
 
     return (
-        <div className="tracking-page">
-            <h1 className="tracking-heading">Tracking</h1>
+        <div className="tracking-page" style={{backgroundColor: "white"}}>
+            {/* <h1 className="tracking-heading">Tracking</h1> */}
             <div className="tracking-hero">
             <h1 className="tracking-title">Your Match</h1>
             <p className="tracking-subtitle">
@@ -135,10 +136,13 @@ function Tracking() {
             </div>
         </div>
             {matches.length === 0 ? (
-                <p className="no-match-message">
-                    No match currently.<br />
-                    We'll notify you when we find a suitable partner!
-                </p>
+                <div className="no-match-message">
+                    {/* No match currently.<br />
+                    We'll notify you when we find a suitable partner! */}
+                    <div>
+                        <div><Tracker/></div>
+                    </div>
+                </div>
                 
             ) : (
                 <div className="match-cards-container">

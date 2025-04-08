@@ -152,9 +152,10 @@ body {
   }
   .outside{
     padding: 50px;
-    margin-left: 10%;
-    margin-right: 10%;
-    border-bottom: 4px solid #000; /* Black line under header */
+    padding-bottom: 100px;
+    margin-left: 5%;
+    margin-right: 5%;
+    border-bottom: 2px solid #000; /* Black line under header */
   }
 
   .search-results-grid {
