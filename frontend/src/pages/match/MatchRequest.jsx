@@ -11,6 +11,7 @@ import {
   getDoc
 } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
+import { FaCalendarAlt, FaSun, FaTruck } from "react-icons/fa";
 import "./MatchRequest.css";
 import Search from "./Search";
 
@@ -237,34 +238,23 @@ function MatchRequest() {
           <h1 style={{ paddingBottom: "10%" }}>Top Match</h1>
           <div className="match-card">
             <h2>{topMatch.name || "No Name"}</h2>
-            <span className="tag2">Active</span>
-            <div className="box1">
-              <p style={{ textAlign: "center" }}>{topMatch.description || "No Description"}</p>
+            <span className="status-badge">Active</span>
+
+            <div className="card-body">
+              <p className="description">{topMatch.description || "No Description"}</p>
+              <p><strong>Address:</strong> {topMatch.address || "No Address"}</p>
               <p><strong>Email:</strong> {topMatch.email || "No Email"}</p>
               <p><strong>Phone:</strong> {topMatch.phoneNumber || "No Phone"}</p>
-              <p><strong>Address:</strong> {topMatch.address || "No Address"}</p>
-              <p><strong>Website:</strong> {topMatch.website || "No Website"}</p>
-              <p><strong>Arrangement:</strong> {topMatch.arrangement || "Not specified"}</p>
-              <div className="availability">
-                <h3>AVAILABILITY</h3>
-                <div className="availability-days">
-                  {Array.isArray(topMatch.days) && topMatch.days.map((day, i) => (
-                    <span key={i}>{day}</span>
-                  ))}
-                </div>
-                <div className="availability-times">
-                  {Array.isArray(topMatch.times) && topMatch.times.map((time, i) => (
-                    <span key={i}><i className="fa fa-sun"></i> {time}</span>
-                  ))}
-                </div>
-              </div>
-              <div className="delivery">
-                <i className="fa fa-truck"></i> Delivery
-                <i className="fa fa-location-arrow"></i> Pickup
-              </div>
-              <h3>TAGS</h3>
+              <p><strong>Website:</strong> <span className="highlight">{topMatch.website || "No Website"}</span></p>
+              <hr />
+              <h4>AVAILABILITY</h4>
+              <p><FaCalendarAlt className="icon" /> {Array.isArray(topMatch.days) ? topMatch.days.join(", ") : "No Days"}</p>
+              <p><FaSun className="icon" /> {Array.isArray(topMatch.times) ? topMatch.times.join(", ") : "No Times"}</p>
+              <p><FaTruck className="icon" /> {topMatch.arrangement || "Not specified"}</p>
+              <hr />
+              <h4>TAGS</h4>
               <div className="tags">
-                {Array.isArray(topMatch.tags) && topMatch.tags.length > 0 ? (
+                {(topMatch.tags || []).length > 0 ? (
                   topMatch.tags.map((tag, i) => (
                     <span key={i} className="tag">{tag}</span>
                   ))
@@ -273,6 +263,7 @@ function MatchRequest() {
                 )}
               </div>
             </div>
+
             <button
               className={`request-button ${alreadySent(topMatch.email) ? "sent" : ""}`}
               onClick={() => !alreadySent(topMatch.email) && handleRequest(topMatch)}
@@ -310,33 +301,23 @@ function MatchRequest() {
               <div key={index} className="match-card">
                 <h2>{match.name || "No Name"}</h2>
                 <span className="tag2">Active</span>
-                <div className="box1">
-                  <p style={{ textAlign: "center" }}>{match.description || "No Description"}</p>
+                <div className="card-body">
+                  <p className="description">{match.description || "No Description"}</p>
+                  <p><strong>Address:</strong> {match.address || "No Address"}</p>
                   <p><strong>Email:</strong> {match.email || "No Email"}</p>
                   <p><strong>Phone:</strong> {match.phoneNumber || "No Phone"}</p>
-                  <p><strong>Address:</strong> {match.address || "No Address"}</p>
-                  <p><strong>Website:</strong> {match.website || "No Website"}</p>
-                  <p><strong>Arrangement:</strong> {match.arrangement || "Not specified"}</p>
-                  <div className="availability">
-                    <h3>AVAILABILITY</h3>
-                    <div className="availability-days">
-                      {Array.isArray(match.days) && match.days.map((day, i) => (
-                        <span key={i}>{day}</span>
-                      ))}
-                    </div>
-                    <div className="availability-times">
-                      {Array.isArray(match.times) && match.times.map((time, i) => (
-                        <span key={i}><i className="fa fa-sun"></i> {time}</span>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="delivery">
-                    <i className="fa fa-truck"></i> Delivery
-                    <i className="fa fa-location-arrow"></i> Pickup
-                  </div>
-                  <h3>TAGS</h3>
+                  <p><strong>Website:</strong> <span className="highlight">{match.website || "No Website"}</span></p>
+
+                  <hr />
+                  <h4>AVAILABILITY</h4>
+                  <p><FaCalendarAlt className="icon" /> {Array.isArray(match.days) ? match.days.join(", ") : "No Days"}</p>
+                  <p><FaSun className="icon" /> {Array.isArray(match.times) ? match.times.join(", ") : "No Times"}</p>
+                  <p><FaTruck className="icon" /> {match.arrangement || "Not specified"}</p>
+
+                  <hr />
+                  <h4>TAGS</h4>
                   <div className="tags">
-                    {Array.isArray(match.tags) && match.tags.length > 0 ? (
+                    {(match.tags || []).length > 0 ? (
                       match.tags.map((tag, i) => (
                         <span key={i} className="tag">{tag}</span>
                       ))

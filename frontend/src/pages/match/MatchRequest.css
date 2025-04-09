@@ -1,187 +1,194 @@
 /* Global Styles */
 body {
-    font-family: Arial, sans-serif;
-  }
+  font-family: Arial, sans-serif;
+}
 
-  .match-request-page {
-    padding-bottom: 10%;
-    background-color: #FFFFFF;
-  }
+.match-request-page {
+  padding-bottom: 10%;
+  background-color: #FFFFFF;
+}
 
-  h1.active-heading {
-    line-height: 0px;
-    font-size: 2em;
-    text-align: center;
-    color: #6A5741;
-    background-color: #C9C466;
-    padding: 15px;
-    border-radius: 25px;
-    text-align: center;
-    margin-bottom: 30px;
-  }
+h1.active-heading {
+  line-height: 0px;
+  font-size: 2em;
+  text-align: center;
+  color: #6A5741;
+  background-color: #C9C466;
+  padding: 15px;
+  border-radius: 25px;
+  text-align: center;
+  margin-bottom: 30px;
+}
 
-  .match-card {
-    line-height: 20px;
-    background: #F5F5F5;
-    padding: 20px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
-    width: 300px;
-    position: relative;
-  }
+.match-card {
+  background-color: #f5f5f5;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  width: 300px;
+  text-align: center;
+  position: relative;
+}
 
-  .searchBox {
-    background: #F7CF84;
-  }
+.match-card h2 {
+  font-size: 1.5em;
+  color: #000;
+  margin-bottom: 10px;
+}
 
-  .match-card h2 {
-    font-size: 1.5em;
-    color: #6A5741;
-    margin-bottom: 10px;
-  }
+.status-badge, .tag2 {
+  background-color: #D4CF7F;
+  color: #000;
+  font-weight: 600;
+  padding: 6px 20px;
+  border-radius: 25px;
+  display: inline-block;
+  margin: 10px 0;
+  font-size: 1.2em;
+}
 
-  .match-card p {
-    color: #6A5741;
-    font-size: .8em;
-    line-height: auto;
-    margin-bottom: 10px;
-    text-align: left;
-  }
+.box1 {
+  background-color: #FFFFFF;
+  padding: 20px 24px;
+  border-radius: 8px;
+  margin-top: 20px;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: left;
+  font-size: 14px;
+  color: #333;
+}
 
-  .tags {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 15px;
-  }
+.box1 p {
+  margin-bottom: 10px;
+}
 
-  .tag2 {
-    padding: 0px 12px;
-    background-color: #C9C466;
-    border-radius: 30px;
-    font-size: 1.2em;
-    color: #6A5741;
-  }
+.box1 .description {
+  text-align: center;
+  margin-bottom: 1rem;
+}
 
-  .request-button {
-    background-color: #F19B5A;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    font-size: 1em;
-    cursor: pointer;
-    width: 100%;
-  }
+.box1 hr {
+  border: none;
+  border-top: 1px solid #A28562;
+  margin: 1rem 0;
+}
 
-  .request-button:hover {
-    background-color: #C9C466;
-  }
+.box1 h3,
+.box1 h4 {
+  color: #6A5741;
+  font-weight: bold;
+  margin: 0.5rem 0;
+}
 
-  .match-card {
-    position: relative;
-    text-align: center;
-    align-items: center;
-  }
+.icon {
+  margin-right: 8px;
+}
 
-  .box1 {
-    margin-top: 20px;
-    background-color: #FFFFFF;
-    padding: 10px;
-    align-items: center;
-    justify-content: center;
-  }
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 0.5rem;
+}
 
-  .match-card h3 {
-    font-size: .8em;
-    color: #6A5741;
-    border-top: 1px solid #000; 
-    padding-bottom: 5px;
-    margin-bottom: 10px;
-  }
+.tag {
+  background-color: #F19B5A;
+  color: white;
+  padding: 6px 16px;
+  border-radius: 25px;
+  font-size: 13px;
+}
 
-  .availability-days span {
-    font-size: .8em;
-    color: #6A5741;
-  }
+.delivery {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+  margin-top: 15px;
+}
 
-  .delivery {
-    display: flex;
-    justify-content: center;
-    margin-top: 15px;
-    gap: 10px;
-  }
+.availability-days,
+.availability-times {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 10px;
+}
 
-  .availability-days {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 15px;
-  }
+.availability-days span,
+.availability-times span {
+  font-size: 0.9em;
+  color: #6A5741;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
 
-  .availability-days span {
-    display: inline-block;
-    width: 100px;
-    height: 30px;
-    background-color: #F7CF84; 
-    color: #6A5741;
-    text-align: center;
-    line-height: 30px;
-    border-radius: 5px;
-    font-weight: bold;
-  }
+.availability-times i,
+.delivery i {
+  color: #F19B5A;
+  margin-right: 5px;
+}
 
-  .availability-times {
-    display: flex;
-  }
+.request-button {
+  background-color: #F19B5A;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1em;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 15px;
+  transition: background-color 0.2s ease;
+}
 
-  .availability-times span {
-    display: flex;
-    align-items: center;
-    font-size: 1em;
-    color: #6A5741;
-  }
+.request-button:hover {
+  background-color: #e76f51;
+}
 
-  .availability-times i {
-    color: #F19B5A;
-    margin-right: 5px;
-  }
-  .outside {
-    padding: 50px;
-    padding-bottom: 100px;
-    margin-left: 5%;
-    margin-right: 5%;
-    border-bottom: 2px solid #000; /* Black line under header */
-  }
+.request-button.sent {
+  background-color: #C9C466;
+}
 
+.outside {
+  padding: 50px;
+  padding-bottom: 100px;
+  margin-left: 5%;
+  margin-right: 5%;
+  border-bottom: 2px solid #000;
+  display: grid;
+  justify-content: center;
+  justify-items: center;
+}
+
+.searchBox {
+  background-color: #F7CF84;
+  margin-left: 10%;
+  height: 100%;
+  position: relative;
+  top: 0;
+}
+
+.search-results-grid {
+  display: grid;
+  grid-template-columns: 40% 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.match-cards {
+  display: grid;
+  row-gap: 20px;
+  grid-template-columns: 1fr 1fr;
+}
+
+@media (max-width: 768px) {
   .search-results-grid {
-    display: grid;
-    grid-template-columns: 40% 1fr; /* 35% for search, 65% for matches */
-    gap: 20px;
-    align-items: start;
+    grid-template-columns: 1fr;
   }
-  .searchBox {
-    background-color: #F7CF84;
-    /* padding: 16px; */
-    margin-left: 10%;
-    height: 100%;
-    position: relative;
-    top: 0;
-  }
-  /* Container for match cards in two columns */
   .match-cards {
-    display: grid;
-    row-gap: 20px;
-    grid-template-columns: 1fr 1fr; /* Two cards per row */
+    grid-template-columns: 1fr;
   }
-
-  @media (max-width: 768px) {
-    .search-results-grid {
-      grid-template-columns: 1fr;
-    }
-    .match-cards {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  .request-button.sent {
-    background-color: #C9C466;
-  }
-  
+}

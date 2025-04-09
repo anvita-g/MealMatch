@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { db, auth } from "../../firebaseConfig";
 import { collection, query, where, getDocs, doc, updateDoc, setDoc, getDoc } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
+import { FaCalendarAlt, FaSun, FaTruck } from "react-icons/fa";
 import './Tracker.css';
 // import MatchingRequest from './match/MatchingRequest';
 
@@ -144,42 +145,32 @@ const Tracker = () => {
             <h1 style={{fontSize: "2em"}}>Review Your Match</h1>
           </div>
           <div className="match-review">
-            <div className="match-card">
-                <h2>{topMatch.name || "No Name"}</h2>
-                <span className="tag2">Active</span>
-                <div className="box1">
-                <p style={{textAlign: "center"}}>{topMatch.description || "No Description"}</p>
-                <p><strong>Email:</strong> {topMatch.email || "No Email"}</p>
-                <p><strong>Phone:</strong> {topMatch.phoneNumber || "No Phone"}</p>
-                <p><strong>Address:</strong> {topMatch.address || "No Address"}</p>
-                <p><strong>Website:</strong> {topMatch.website || "No Website"}</p>
-                <p><strong>Arrangement:</strong> {topMatch.arrangement || "Not specified"}</p>
-                <div className="availability">
-                    <h3>AVAILABILITY</h3>
-                    <div className="availability-days">
-                    <span>Mon</span>
-                    <span>Tue</span>
-                    <span>Wed</span>
-                    <span>Thu</span>
-                    <span>Fri</span>
-                    </div>
-                    <div className="availability-times">
-                    <span><i className="fa fa-sun"></i> Morning</span>
-                    <span><i className="fa fa-sun"></i> Afternoon</span>
-                    </div>
-                </div>
-                <div className="delivery">
-                    <i className="fa fa-truck"></i> Delivery
-                    <i className="fa fa-location-arrow"></i> Pickup
-                </div>
-                <h3>TAGS</h3>
-                <div className="tags">
-                    <span className="tag">Vegan</span>
-                    <span className="tag">Halal</span>
-                    <span className="tag">Gluten-Free</span>
-                </div>
-                </div>
+          <div className="match-card">
+            <h2>{topMatch.name || "No Name"}</h2>
+            <span className="status-badge">Active</span>
+
+            <div className="card-body">
+              <p className="description">{topMatch.description || "No Description"}</p>
+              <p><strong>Address:</strong> {topMatch.address || "No Address"}</p>
+              <p><strong>Email:</strong> {topMatch.email || "No Email"}</p>
+              <p><strong>Phone:</strong> {topMatch.phoneNumber || "No Phone"}</p>
+              <p><strong>Website:</strong> <span className="highlight">{topMatch.website || "No Website"}</span></p>
+
+              <hr />
+              <h4>AVAILABILITY</h4>
+              <p><FaCalendarAlt className="icon" /> {topMatch.availabilityDays?.join(", ") || "No Days"}</p>
+              <p><FaSun className="icon" /> {topMatch.availabilityTimes?.join(", ") || "No Times"}</p>
+              <p><FaTruck className="icon" /> {topMatch.arrangement || "Pickup Only"}</p>
+
+              <hr />
+              <h4>TAGS</h4>
+              <div className="tags">
+                {(topMatch.tags || []).map((tag, index) => (
+                  <span key={index} className="tag">{tag}</span>
+                ))}
+              </div>
             </div>
+          </div>
             <div className="match-actions">
               <p>Can't proceed with this match?</p>
               <p>Please cancel promptly.</p>

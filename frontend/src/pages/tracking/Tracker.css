@@ -1,190 +1,270 @@
 .tracker-container {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-  }
-  
-  .tracker-section {
-    background-color: white;
-    padding: 1rem;
-    border-radius: 8px;
-    
-  }
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  font-family: 'Hind', sans-serif;
+  font-size: 13px;
+  color: #6A5741;
+}
 
-  li{
-    list-style-type: none;
-  }
+.tracker-section {
+  padding: 1rem 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+}
 
-  .match-review {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10%;
-    margin-left: 5%;
-    margin-right: 5%;
-    padding-bottom: 50px;
-    border-bottom: 1px solid #000; 
-  }
+li {
+  list-style-type: none;
+  font-size: 13px;
+}
 
-  .match-actions {
-    text-align: center;
-    p{
-        font-size: larger;
-        font-weight: bolder;
-    }
-    button{
-        background-color: #F19B5A;
-        color: white;
-        border-radius: 50px;
-        font-size: larger;
-        cursor: pointer;
-        padding: 10px 30px 10px 30px;
-        border: none;
-    }
-  }
-  
-  .details-discussion {
-    display: flex;
-    /* gap: 2rem; */
-    margin-left: 5%;
-    margin-right: 5%;
-    padding-bottom: 50px;
-    padding-top: 50px;
-    border-bottom: 1px solid #000; 
-  }
-  
-  .logistics, .confirmation-survey {
-    flex: 1;
-    text-align: left;
-    
-    h3{
-        font-size: 1.5em;
-    }
+.match-review {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5%;
+  margin: 0 4%;
+  padding-bottom: 30px;
+  border-bottom: 1px solid #ccc;
+}
 
-    button{
-        margin-top: 20px;
-        margin-bottom: 20px;
-        background-color: #F19B5A;
-        color: white;
-        border-radius: 50px;
-        font-size: larger;
-        cursor: pointer;
-        padding: 10px 30px 10px 30px;
-        border: none;
-    }
-  }
+.match-actions {
+  text-align: center;
+}
 
-  .logistics{
-    border-right: #F19B5A 2px solid;
-  }
-  .confirmation-survey{
-    padding-left: 70px;
-    border-left: #F19B5A 2px solid;
-  }
+.match-actions p {
+  font-size: 13px;
+  font-weight: 600;
+  margin: 4px 0;
+}
 
-  .progress-checklist {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 1rem;
-    margin-left: 10%;
-    margin-right: 10%;  
-  }
-  
-  label{
-    display: flex;
-  }
+.match-actions button {
+  background-color: #F19B5A;
+  color: white;
+  border-radius: 25px;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 6px 20px;
+  border: none;
+  margin-top: 10px;
+}
 
-  .heading {
-    display: flex; 
-    flex-direction: row;
-    align-items: center;
-    gap: 40px;
-    height: 0px;
-    padding-bottom: 30px;
-    margin-left: 6%;
-    margin-right: 6%;
-  }
+.match-card {
+  background-color: #f5f5f5;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  width: 300px;
+  text-align: center;
+}
 
-  .progress-line { 
-    height: 5px;
-    background: linear-gradient(to right, #677A3F 50%, #ccc 50%);
-    border-radius: 4px;
-    margin: 1.5rem 0;
-    margin-left: 10%;
-    margin-right: 10%;
-  }
+.card-body {
+  background-color: white;
+  padding: 20px 24px;
+  border-radius: 8px;
+  margin-top: 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
 
-  .feedback-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    background-color: #fff;
-    border: 2px solid #ccc;
-    border-radius: 10px;
-    padding: 2rem;
-    width: 80%;
-    margin: 0 auto;
-  }
 
-  .feedback-form input,
-  .feedback-form textarea {
-    width: 100%;
-    padding: 0.75rem 1rem;
-    border: 1px solid #bbb;
-    border-radius: 8px;
-    font-size: 1rem;
-    box-sizing: border-box;
-  }
-  
-  .feedback-form textarea {
-    resize: vertical;
-    height: 120px;
-  }
-  
-  .rating {
-    display: flex;
-    font-size: 2rem;
-    margin: 1rem 0;
-    cursor: pointer;
-    margin-top: 0px;
-  }
-  
-  .filled-star {
-    color: #f5a623;
-  }
-  
-  .empty-star {
-    color: #ddd;
-  }
-  
-  .feedback-form button {
-    background-color: #F19B5A;
-    color: white;
-    padding: 0.75rem;
-    font-size: 1rem;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    width: 100%;
-    transition: background-color 0.2s ease;
-  }
-  
-  .feedback-form button:hover {
-    background-color: #677A3F;
-  }
-  
-  .progress-checklist label {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    text-align: center;
-    font-size: 0.95rem;
-    color: #333;
-    input{
-        width: 50px;
-    }
-    p{
-        padding-bottom: 15px;
-    }
-   
-  }
+.status-badge {
+  background-color: #D4CF7F;
+  color: #000;
+  font-weight: 600;
+  padding: 6px 20px;
+  border-radius: 25px;
+  display: inline-block;
+  margin: 10px 0;
+}
+
+.card-body {
+  text-align: left;
+  font-size: 14px;
+  color: #333;
+}
+
+.card-body .description {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.card-body hr {
+  border: none;
+  border-top: 1px solid #A28562;
+  margin: 1rem 0;
+}
+
+.card-body h4 {
+  color: #6A5741;
+  font-weight: bold;
+  margin: 0.5rem 0;
+}
+
+.icon {
+  margin-right: 8px;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 0.5rem;
+}
+
+.tag {
+  background-color: #F19B5A;
+  color: white;
+  padding: 6px 16px;
+  border-radius: 25px;
+  font-size: 13px;
+}
+
+.details-discussion {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 30px 0;
+  border-bottom: 1px solid #ccc;
+  font-size: 13px;
+  gap: 50pxl
+}
+
+.logistics,
+.confirmation-survey {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.logistics h3,
+.confirmation-survey h3 {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.logistics button,
+.confirmation-survey button {
+  background-color: #F19B5A;
+  color: white;
+  border-radius: 20px;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 6px 20px;
+  border: none;
+  margin-top: 10px;
+}
+
+.logistics {
+  padding-right: 50px;
+}
+
+.confirmation-survey {
+  border-left: 2px solid #F19B5A;
+  position: relative;
+  padding-left: 100px;
+
+}
+
+.progress-checklist {
+  display: flex;
+  justify-content: space-between;
+  margin: 1rem 10%;
+  font-size: 13px;
+}
+
+label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.heading {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding-bottom: 20px;
+  margin: 0 6%;
+}
+
+.heading h1:first-child {
+  font-size: 36px;
+  margin: 0;
+}
+
+.heading h1:last-child {
+  font-size: 18px;
+  margin: 0;
+}
+
+.progress-line {
+  height: 4px;
+  background: linear-gradient(to right, #677A3F 50%, #ccc 50%);
+  border-radius: 2px;
+  margin: 1rem 10%;
+}
+
+.feedback-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 1.5rem;
+  width: 80%;
+  margin: 0 auto;
+  font-size: 13px;
+}
+
+.feedback-form input,
+.feedback-form textarea {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #bbb;
+  border-radius: 6px;
+  font-size: 13px;
+  box-sizing: border-box;
+}
+
+.feedback-form textarea {
+  resize: vertical;
+  height: 100px;
+}
+
+.rating {
+  display: flex;
+  font-size: 20px;
+  cursor: pointer;
+  margin-top: 0;
+}
+
+.filled-star {
+  color: #f5a623;
+}
+
+.empty-star {
+  color: #ddd;
+}
+
+.feedback-form button {
+  background-color: #F19B5A;
+  color: white;
+  padding: 0.6rem;
+  font-size: 13px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.2s ease;
+}
+
+.feedback-form button:hover {
+  background-color: #e76f51;
+}
+
+.progress-checklist label p {
+  padding-bottom: 10px;
+  margin: 0;
+}
