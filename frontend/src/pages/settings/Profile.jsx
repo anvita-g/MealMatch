@@ -119,6 +119,21 @@ function Profile() {
     }
   };
 
+  const handlePhoneChange = (e) => {
+    let input = e.target.value.replace(/\D/g, ""); // remove non-digits
+    if (input.length > 10) input = input.slice(0, 10); // limit to 10 digits
+  
+    let formatted = input;
+    if (input.length >= 6) {
+      formatted = `(${input.slice(0, 3)})${input.slice(3, 6)}-${input.slice(6)}`;
+    } else if (input.length >= 3) {
+      formatted = `(${input.slice(0, 3)})${input.slice(3)}`;
+    }
+  
+    setEditableData({ ...editableData, phone: formatted });
+  };
+  
+
   if (loading) return <p>Loading...</p>;
   if (!profile) return <p>Error loading profile.</p>;
 
@@ -221,7 +236,14 @@ function Profile() {
             <strong>Phone Number:</strong>{" "}
             <span className="highlight">
               {isEditing ? (
-                <input type="text" name="phone" value={editableData.phone} onChange={handleChange} className="editable-input" />
+                <input
+                type="text"
+                name="phone"
+                placeholder="(xxx)xxx-xxxx"
+                value={editableData.phone}
+                onChange={handlePhoneChange}
+                className="editable-input"
+              />
               ) : (
                 profile.phoneNumber || "No Phone"
               )}

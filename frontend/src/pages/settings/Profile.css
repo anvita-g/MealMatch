@@ -155,5 +155,7 @@ body {
   min-width: 200px;
   width: 60%;
   max-width: 400px;
+  min-height: 38px;
+  resize: vertical;
 }
   
