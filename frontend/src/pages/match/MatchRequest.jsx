@@ -273,7 +273,7 @@ function MatchRequest() {
           </div>
         </div>
       )}
-
+      <h1 className="explore-heading">Explore More Options</h1>
       <div className="search-results-grid">
         <div className="searchBox">
           <Search
