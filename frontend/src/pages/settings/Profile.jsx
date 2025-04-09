@@ -133,6 +133,14 @@ function Profile() {
     setEditableData({ ...editableData, phone: formatted });
   };
   
+  const formatArrangementText = () => {
+    const a = profile.arrangement;
+    if (!a || !Array.isArray(a)) return "Pickup Only";
+    if (a.includes("delivery") && a.includes("pickup")) return "Delivery, Pickup";
+    if (a.includes("delivery")) return "Delivery";
+    if (a.includes("pickup")) return "Pickup";
+    return "None";
+  };  
 
   if (loading) return <p>Loading...</p>;
   if (!profile) return <p>Error loading profile.</p>;
@@ -184,11 +192,10 @@ function Profile() {
      ) : (
        <p>Time of day not set</p>
      )}
-   
    <p>
-       <FaTruck className="icon" />
-       {profile.arrangement || "Pickup Only"}
-     </p>
+    <FaTruck className="icon" />
+    {formatArrangementText()}
+  </p>
    </div>
    <div className="section">
            <h4>TAGS</h4>
