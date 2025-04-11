@@ -31,6 +31,7 @@ function MatchRequest() {
   const [allMatches, setAllMatches] = useState([]);
   const [userLocation, setUserLocation] = useState(null);
 
+  // sentMatches now stores candidate emails only if the corresponding flag is true.
   const [sentMatches, setSentMatches] = useState(new Set());
 
   const computeMatchScore = (currentUserData, match) => {
@@ -109,9 +110,17 @@ function MatchRequest() {
       if (!currentUser || !role) return;
       let q;
       if (role === "restaurant") {
-        q = query(collection(db, "matches"), where("restaurantEmail", "==", currentUser.email));
+        q = query(
+          collection(db, "matches"),
+          where("restaurantEmail", "==", currentUser.email),
+          where("restaurantRequest", "==", true)
+        );
       } else {
-        q = query(collection(db, "matches"), where("shelterEmail", "==", currentUser.email));
+        q = query(
+          collection(db, "matches"),
+          where("shelterEmail", "==", currentUser.email),
+          where("shelterRequest", "==", true)
+        );
       }
       try {
         const snapshot = await getDocs(q);
@@ -119,9 +128,13 @@ function MatchRequest() {
         snapshot.forEach(doc => {
           const data = doc.data();
           if (role === "restaurant") {
-            if (data.shelterEmail) emailSet.add(data.shelterEmail);
+            if (data.shelterEmail && data.restaurantRequest === true) {
+              emailSet.add(data.shelterEmail);
+            }
           } else {
-            if (data.restaurantEmail) emailSet.add(data.restaurantEmail);
+            if (data.restaurantEmail && data.shelterRequest === true) {
+              emailSet.add(data.restaurantEmail);
+            }
           }
         });
         setSentMatches(emailSet);
@@ -224,28 +237,20 @@ function MatchRequest() {
 
   return (
     <div className="match-request-page">
-      {/* <div className="search-bar">
-        <input
-          type="text"
-          placeholder="Search for matches..."
-          value={searchQuery}
-          onChange={e => setSearchQuery(e.target.value)}
-        />
-      </div> */}
-
       {topMatch && (
         <div className="outside" style={{ display: "grid", justifyContent: "center", justifyItems: "center" }}>
           <h1 style={{ paddingBottom: "10%" }}>Top Match</h1>
           <div className="match-card">
             <h2>{topMatch.name || "No Name"}</h2>
             <span className="status-badge">Active</span>
-
             <div className="card-body">
               <p className="description">{topMatch.description || "No Description"}</p>
               <p><strong>Address:</strong> {topMatch.address || "No Address"}</p>
               <p><strong>Email:</strong> {topMatch.email || "No Email"}</p>
               <p><strong>Phone:</strong> {topMatch.phoneNumber || "No Phone"}</p>
-              <p><strong>Website:</strong> <span className="highlight">{topMatch.website || "No Website"}</span></p>
+              <p>
+                <strong>Website:</strong> <span className="highlight">{topMatch.website || "No Website"}</span>
+              </p>
               <hr />
               <h4>AVAILABILITY</h4>
               <p><FaCalendarAlt className="icon" /> {Array.isArray(topMatch.days) ? topMatch.days.join(", ") : "No Days"}</p>
@@ -263,7 +268,6 @@ function MatchRequest() {
                 )}
               </div>
             </div>
-
             <button
               className={`request-button ${alreadySent(topMatch.email) ? "sent" : ""}`}
               onClick={() => !alreadySent(topMatch.email) && handleRequest(topMatch)}
@@ -292,7 +296,6 @@ function MatchRequest() {
             Apply Filters
           </button>
         </div>
-
         <div className="match-cards">
           {matches.length === 0 ? (
             <p>No matches found.</p>
@@ -306,14 +309,14 @@ function MatchRequest() {
                   <p><strong>Address:</strong> {match.address || "No Address"}</p>
                   <p><strong>Email:</strong> {match.email || "No Email"}</p>
                   <p><strong>Phone:</strong> {match.phoneNumber || "No Phone"}</p>
-                  <p><strong>Website:</strong> <span className="highlight">{match.website || "No Website"}</span></p>
-
+                  <p>
+                    <strong>Website:</strong> <span className="highlight">{match.website || "No Website"}</span>
+                  </p>
                   <hr />
                   <h4>AVAILABILITY</h4>
                   <p><FaCalendarAlt className="icon" /> {Array.isArray(match.days) ? match.days.join(", ") : "No Days"}</p>
                   <p><FaSun className="icon" /> {Array.isArray(match.times) ? match.times.join(", ") : "No Times"}</p>
                   <p><FaTruck className="icon" /> {match.arrangement || "Not specified"}</p>
-
                   <hr />
                   <h4>TAGS</h4>
                   <div className="tags">
