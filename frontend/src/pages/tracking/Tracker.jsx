@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { db, auth } from "../../firebaseConfig";
-import { collection, query, where, getDocs, doc, updateDoc, setDoc, getDoc } from "firebase/firestore";
+import { collection, query, where, getDocs, doc, updateDoc, setDoc, getDoc, addDoc } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { FaCalendarAlt, FaSun, FaTruck } from "react-icons/fa";
 import "./Tracker.css";
@@ -69,7 +69,7 @@ const Tracker = () => {
       }
       setLoading(false);
     };
-    const unsubscribe = onAuthStateChanged(auth, user => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         fetchMatch();
       } else {
@@ -118,7 +118,26 @@ const Tracker = () => {
     }
   };
 
-  const handleSubmitFeedback = () => {};
+  const handleSubmitFeedback = async (e) => {
+    e.preventDefault();
+    try {
+      await addDoc(collection(db, "feedback"), {
+        name,
+        id,
+        comments,
+        rating,
+        timestamp: new Date()
+      });
+      alert("Feedback submitted!");
+      setName("");
+      setId("");
+      setComments("");
+      setRating(0);
+    } catch (error) {
+      console.error("Error submitting feedback:", error);
+      alert("Error submitting feedback");
+    }
+  };
 
   if (loading) return <p>Loading matches...</p>;
 
@@ -140,20 +159,13 @@ const Tracker = () => {
                 <p><strong>Email:</strong> {matchData.email || "No Email"}</p>
                 <p><strong>Phone:</strong> {matchData.phoneNumber || "No Phone"}</p>
                 <p>
-                  <strong>Website:</strong>{" "}
-                  <span className="highlight">{matchData.website || "No Website"}</span>
+                  <strong>Website:</strong> <span className="highlight">{matchData.website || "No Website"}</span>
                 </p>
                 <hr />
                 <h4>AVAILABILITY</h4>
-                <p>
-                  <FaCalendarAlt className="icon" /> {Array.isArray(matchData.days) ? matchData.days.join(", ") : "No Days"}
-                </p>
-                <p>
-                  <FaSun className="icon" /> {Array.isArray(matchData.times) ? matchData.times.join(", ") : "No Times"}
-                </p>
-                <p>
-                  <FaTruck className="icon" /> {matchData.arrangement || "Not specified"}
-                </p>
+                <p><FaCalendarAlt className="icon" /> {Array.isArray(matchData.days) ? matchData.days.join(", ") : "No Days"}</p>
+                <p><FaSun className="icon" /> {Array.isArray(matchData.times) ? matchData.times.join(", ") : "No Times"}</p>
+                <p><FaTruck className="icon" /> {matchData.arrangement || "Not specified"}</p>
                 <hr />
                 <h4>TAGS</h4>
                 <div className="tags">
@@ -190,43 +202,23 @@ const Tracker = () => {
             <h3>Confirmation Survey</h3>
             <label>
               Delivery Date:
-              <input
-                type="text"
-                value={confirmationSurvey.deliveryDate}
-                onChange={(e) => setConfirmationSurvey({ ...confirmationSurvey, deliveryDate: e.target.value })}
-              />
+              <input type="text" value={confirmationSurvey.deliveryDate} onChange={(e) => setConfirmationSurvey({ ...confirmationSurvey, deliveryDate: e.target.value })} />
             </label>
             <label>
               Time:
-              <input
-                type="text"
-                value={confirmationSurvey.time}
-                onChange={(e) => setConfirmationSurvey({ ...confirmationSurvey, time: e.target.value })}
-              />
+              <input type="text" value={confirmationSurvey.time} onChange={(e) => setConfirmationSurvey({ ...confirmationSurvey, time: e.target.value })} />
             </label>
             <label>
               Food Requirements & Limitations:
-              <input
-                type="text"
-                value={confirmationSurvey.foodRequirements}
-                onChange={(e) => setConfirmationSurvey({ ...confirmationSurvey, foodRequirements: e.target.value })}
-              />
+              <input type="text" value={confirmationSurvey.foodRequirements} onChange={(e) => setConfirmationSurvey({ ...confirmationSurvey, foodRequirements: e.target.value })} />
             </label>
             <label>
               Transportation Notes:
-              <input
-                type="text"
-                value={confirmationSurvey.transportationNotes}
-                onChange={(e) => setConfirmationSurvey({ ...confirmationSurvey, transportationNotes: e.target.value })}
-              />
+              <input type="text" value={confirmationSurvey.transportationNotes} onChange={(e) => setConfirmationSurvey({ ...confirmationSurvey, transportationNotes: e.target.value })} />
             </label>
             <label>
               Food Storage Notes:
-              <input
-                type="text"
-                value={confirmationSurvey.foodStorageNotes}
-                onChange={(e) => setConfirmationSurvey({ ...confirmationSurvey, foodStorageNotes: e.target.value })}
-              />
+              <input type="text" value={confirmationSurvey.foodStorageNotes} onChange={(e) => setConfirmationSurvey({ ...confirmationSurvey, foodStorageNotes: e.target.value })} />
             </label>
             <div className="surveybutton">
               <button type="button" onClick={handleSaveConfirmation}>Save Confirmation</button>
