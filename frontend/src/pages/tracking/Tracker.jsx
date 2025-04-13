@@ -169,7 +169,7 @@ const Tracker = () => {
                 <hr />
                 <h4>TAGS</h4>
                 <div className="tags">
-                  {(matchData.tags || []).map((tag, index) => (
+                  {(Array.isArray(matchData.tags) ? matchData.tags : []).map((tag, index) => (
                     <span key={index} className="tag">{tag}</span>
                   ))}
                 </div>
@@ -228,7 +228,6 @@ const Tracker = () => {
               </div>
             </div>
           </section>
-
           <section className="tracker-section">
             <div className="heading">
               <h1 style={{ fontSize: "5em" }}>03 & 04</h1>
