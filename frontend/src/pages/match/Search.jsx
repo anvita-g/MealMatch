@@ -14,7 +14,12 @@ const Search = ({
   const days = ["M", "T", "W", "Th", "F", "SA", "SN"];
   const times = ["Morning", "Afternoon", "Evening"];
   const delivery = ["pickup", "delivery"];
-  const tagOptions = ["Vegan", "Halal", "Gluten-Free", "Kosher", "Nut-Free"];
+  const tagOptions = [
+    "Buddhist", "Dairy-Free", "Gluten-Free", "Halal", "Hindu",
+    "Keto", "Kosher", "Low FODMAP", "Low Sodium", "Low Sugar",
+    "Nut-Free", "Paleo", "Pescatarian", "Soy-Free", "Vegan", "Vegetarian"
+  ];
+  //const tagOptions = ["Vegan", "Halal", "Gluten-Free", "Kosher", "Nut-Free"];
   const radiusOptions = [5, 10, 25, 50, 100];
 
   useEffect(() => {
