@@ -185,90 +185,95 @@ const Tracker = () => {
           </div>
         </div>
       </section>
-      <section className="tracker-section">
-        <div className="heading">
-          <h1 style={{ fontSize: "5em" }}>02</h1>
-          <h1 style={{ fontSize: "2em" }}>Discuss the Details</h1>
-        </div>
-        <div className="details-discussion">
-          <div className="logistics">
-            <h3>📞 Discuss Logistics</h3>
-            <li>✔ Food Preferences & Limitations</li>
-            <li>✔ Labeling, Packing & Storage Requirements</li>
-            <li>✔ Scheduling Details (Day & Time)</li>
-            <li>✔ Transportation Plan</li>
-          </div>
-          <div className="confirmation-survey">
-            <h3>Confirmation Survey</h3>
-            <label>
-              Delivery Date:
-              <input type="text" value={confirmationSurvey.deliveryDate} onChange={(e) => setConfirmationSurvey({ ...confirmationSurvey, deliveryDate: e.target.value })} />
-            </label>
-            <label>
-              Time:
-              <input type="text" value={confirmationSurvey.time} onChange={(e) => setConfirmationSurvey({ ...confirmationSurvey, time: e.target.value })} />
-            </label>
-            <label>
-              Food Requirements & Limitations:
-              <input type="text" value={confirmationSurvey.foodRequirements} onChange={(e) => setConfirmationSurvey({ ...confirmationSurvey, foodRequirements: e.target.value })} />
-            </label>
-            <label>
-              Transportation Notes:
-              <input type="text" value={confirmationSurvey.transportationNotes} onChange={(e) => setConfirmationSurvey({ ...confirmationSurvey, transportationNotes: e.target.value })} />
-            </label>
-            <label>
-              Food Storage Notes:
-              <input type="text" value={confirmationSurvey.foodStorageNotes} onChange={(e) => setConfirmationSurvey({ ...confirmationSurvey, foodStorageNotes: e.target.value })} />
-            </label>
-            <div className="surveybutton">
-              <button type="button" onClick={handleSaveConfirmation}>Save Confirmation</button>
+      {matchData && (
+        <>
+          <section className="tracker-section">
+            <div className="heading">
+              <h1 style={{ fontSize: "5em" }}>02</h1>
+              <h1 style={{ fontSize: "2em" }}>Discuss the Details</h1>
             </div>
-          </div>
-        </div>
-      </section>
-      <section className="tracker-section">
-        <div className="heading">
-          <h1 style={{ fontSize: "5em" }}>03 & 04</h1>
-          <h1 style={{ fontSize: "2em" }}>Tracking Progress & Feedback</h1>
-        </div>
-        <form className="formcheck" onSubmit={handleSubmitFeedback}>
-          <div className="progress-line" />
-          <div className="progress-checklist">
-            <label>
-              <input type="checkbox" checked={confirmation} onChange={() => setConfirmation(!confirmation)} />
-              <p>Final Logistics Confirmation</p>
-            </label>
-            <label>
-              <input type="checkbox" checked={pickup} onChange={() => setPickup(!pickup)} />
-              <p>Donation Pickup/Delivery</p>
-            </label>
-            <label>
-              <input type="checkbox" checked={received} onChange={() => setReceived(!received)} />
-              <p>Donation Received</p>
-            </label>
-          </div>
-          <div className="feedback-form">
-            <label>Name</label>
-            <input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
-            <label>ID</label>
-            <input type="text" placeholder="ID" value={id} onChange={(e) => setId(e.target.value)} />
-            <label>Comments</label>
-            <textarea placeholder="Comments" value={comments} onChange={(e) => setComments(e.target.value)} />
-            <label>Rating</label>
-            <div className="rating">
-              {[...Array(5)].map((star, index) => {
-                const currentRating = index + 1;
-                return (
-                  <span key={index} className={currentRating <= rating ? "filled-star" : "empty-star"} onClick={() => setRating(currentRating)}>
-                    ★
-                  </span>
-                );
-              })}
+            <div className="details-discussion">
+              <div className="logistics">
+                <h3>📞 Discuss Logistics</h3>
+                <li>✔ Food Preferences & Limitations</li>
+                <li>✔ Labeling, Packing & Storage Requirements</li>
+                <li>✔ Scheduling Details (Day & Time)</li>
+                <li>✔ Transportation Plan</li>
+              </div>
+              <div className="confirmation-survey">
+                <h3>Confirmation Survey</h3>
+                <label>
+                  Delivery Date:
+                  <input type="text" value={confirmationSurvey.deliveryDate} onChange={(e) => setConfirmationSurvey({ ...confirmationSurvey, deliveryDate: e.target.value })} />
+                </label>
+                <label>
+                  Time:
+                  <input type="text" value={confirmationSurvey.time} onChange={(e) => setConfirmationSurvey({ ...confirmationSurvey, time: e.target.value })} />
+                </label>
+                <label>
+                  Food Requirements & Limitations:
+                  <input type="text" value={confirmationSurvey.foodRequirements} onChange={(e) => setConfirmationSurvey({ ...confirmationSurvey, foodRequirements: e.target.value })} />
+                </label>
+                <label>
+                  Transportation Notes:
+                  <input type="text" value={confirmationSurvey.transportationNotes} onChange={(e) => setConfirmationSurvey({ ...confirmationSurvey, transportationNotes: e.target.value })} />
+                </label>
+                <label>
+                  Food Storage Notes:
+                  <input type="text" value={confirmationSurvey.foodStorageNotes} onChange={(e) => setConfirmationSurvey({ ...confirmationSurvey, foodStorageNotes: e.target.value })} />
+                </label>
+                <div className="surveybutton">
+                  <button type="button" onClick={handleSaveConfirmation}>Save Confirmation</button>
+                </div>
+              </div>
             </div>
-            <button type="submit">SUBMIT</button>
-          </div>
-        </form>
-      </section>
+          </section>
+
+          <section className="tracker-section">
+            <div className="heading">
+              <h1 style={{ fontSize: "5em" }}>03 & 04</h1>
+              <h1 style={{ fontSize: "2em" }}>Tracking Progress & Feedback</h1>
+            </div>
+            <form className="formcheck" onSubmit={handleSubmitFeedback}>
+              <div className="progress-line" />
+              <div className="progress-checklist">
+                <label>
+                  <input type="checkbox" checked={confirmation} onChange={() => setConfirmation(!confirmation)} />
+                  <p>Final Logistics Confirmation</p>
+                </label>
+                <label>
+                  <input type="checkbox" checked={pickup} onChange={() => setPickup(!pickup)} />
+                  <p>Donation Pickup/Delivery</p>
+                </label>
+                <label>
+                  <input type="checkbox" checked={received} onChange={() => setReceived(!received)} />
+                  <p>Donation Received</p>
+                </label>
+              </div>
+              <div className="feedback-form">
+                <label>Name</label>
+                <input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
+                <label>ID</label>
+                <input type="text" placeholder="ID" value={id} onChange={(e) => setId(e.target.value)} />
+                <label>Comments</label>
+                <textarea placeholder="Comments" value={comments} onChange={(e) => setComments(e.target.value)} />
+                <label>Rating</label>
+                <div className="rating">
+                  {[...Array(5)].map((star, index) => {
+                    const currentRating = index + 1;
+                    return (
+                      <span key={index} className={currentRating <= rating ? "filled-star" : "empty-star"} onClick={() => setRating(currentRating)}>
+                        ★
+                      </span>
+                    );
+                  })}
+                </div>
+                <button type="submit">SUBMIT</button>
+              </div>
+            </form>
+          </section>
+        </>
+      )}
     </div>
   );
 };
