@@ -148,15 +148,9 @@ function Tracking() {
                 <div className="match-cards-container">
         {matches.map((match) => (
             <div key={match.id} className="match-card">
-                <div className="match-card-header">
-                    <h3>{match.partnerName}</h3>
-                    <span className={`status-badge status-${match.status.toLowerCase().replace(' ', '-')}`}>
-                        {match.status}
-                    </span>
+                <div>
+                    <div><Tracker/></div>
                 </div>
-                <p className="match-description">{match.donationDetails}</p>
-                <p className="match-updated">Last updated: {match.lastUpdated}</p>
-                <button className="match-button">View Details</button>
             </div>
         ))}
     </div>
